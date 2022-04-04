@@ -1,0 +1,51 @@
+﻿@model FacebookAutoPost.Models.AutoPost
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>AutoPost</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PageId" />
+            <div class="form-group">
+                <label asp-for="Token" class="control-label"></label>
+                <input asp-for="Token" class="form-control" />
+                <span asp-validation-for="Token" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserAPI" class="control-label"></label>
+                <input asp-for="UserAPI" class="form-control" />
+                <span asp-validation-for="UserAPI" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostTemplate" class="control-label"></label>
+                <input asp-for="PostTemplate" class="form-control" />
+                <span asp-validation-for="PostTemplate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Frequency" class="control-label"></label>
+                <input asp-for="Frequency" class="form-control" />
+                <span asp-validation-for="Frequency" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Time" class="control-label"></label>
+                <input asp-for="Time" class="form-control" />
+                <span asp-validation-for="Time" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
