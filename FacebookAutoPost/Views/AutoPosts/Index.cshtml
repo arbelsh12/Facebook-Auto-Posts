@@ -6,12 +6,15 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
+<p class="text-right">
+    <a asp-action="Create" class="btn btn-primary">Create New</a> <!--why no asp controller?-->
 </p>
-<table class="table">
+<table class="table table-bordered">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PageId)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Token)
             </th>
@@ -27,12 +30,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.Time)
             </th>
-            <th></th>
+            <th>Change</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PageId)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Token)
             </td>
@@ -49,9 +55,9 @@
                 @Html.DisplayFor(modelItem => item.Time)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.PageId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PageId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PageId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.PageId" class="btn btn-info">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.PageId" class="btn btn-info">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PageId" class="btn btn-danger">Delete</a> <!--why asp-route-id="item.PageId" and not asp-route-id="AutoPost.PageId ??"-->
             </td>
         </tr>
 }

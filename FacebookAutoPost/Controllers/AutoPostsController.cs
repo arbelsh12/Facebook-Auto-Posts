@@ -12,7 +12,7 @@ namespace FacebookAutoPost.Controllers
 {
     public class AutoPostsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context; // DB ?
 
         public AutoPostsController(ApplicationDbContext context)
         {
@@ -53,14 +53,14 @@ namespace FacebookAutoPost.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] // check if have token - only if logged in - security
         public async Task<IActionResult> Create([Bind("PageId,Token,UserAPI,PostTemplate,Frequency,Time")] AutoPost autoPost)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(autoPost);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index)); // insted of return to a View, retrun to an action that returns a View -> to make sure the new View is updated with the new data
             }
             return View(autoPost);
         }

@@ -18,7 +18,7 @@ namespace FacebookAutoPost.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index() // home/index 
         {
             return View();
         }
