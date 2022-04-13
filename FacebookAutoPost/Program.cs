@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
+using FacebookAutoPost.Data;
 
 namespace FacebookAutoPost
 {
@@ -66,19 +67,24 @@ namespace FacebookAutoPost
             return post.ToString();
         }
 
-
-        public static string createPost()
+        private static readonly ApplicationDbContext _context; // DB 
+    
+        public static async Task<string> createPost(string primeryKey, ApplicationDbContext db)
         {
-            // get template
-            //get api, api key, uri
+            var autoPost = _context.AutoPosts.Find(primeryKey);
 
-            JObject json = getJsonFromApi(api, apiKey, uri);
-            string post = getPost(template, json);
+            //var autoPost = _context.AutoPosts.Find(x => x.Key == primeryKey);
+            string apiKey ="sdfgh";
+            string uri = "drfgh";
+
+            JObject json = await getJsonFromApi(autoPost.UserAPI, apiKey, uri);
+
+            string post = getPost(autoPost.PostTemplate, json);
 
             return post;
         }
 
-        public static async JObject getJsonFromApi(string api, string apiKey, string uri)
+        public static async Task<JObject> getJsonFromApi(string api, string apiKey, string uri)
         {
             var client = new HttpClient();
             var request = new HttpRequestMessage
@@ -147,6 +153,8 @@ namespace FacebookAutoPost
 
                 var name = json.SelectToken("suggestions[0].entities[0].geoId");
 
+                //var autoPosts = _context.AutoPosts.ToList();
+                //autoPosts.ForEach(autoPosts => autoPosts.PageId)
 
                 dynamic stuff = JsonConvert.DeserializeObject(body);
 
