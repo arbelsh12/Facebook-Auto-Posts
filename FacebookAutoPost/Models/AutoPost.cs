@@ -23,33 +23,6 @@ namespace FacebookAutoPost.Models
         public string PostTemplate { get; set; }
         public string Frequency { get; set; }
         public DateTime Time { get; set; }
-
-
-        ////// post to facebook////
-
-        //private static readonly HttpClient client = new HttpClient();
-
-        //private async void postToPage(string accessToken, string url, string msg)
-        //{
-        //    //make_msg
-        //    //send request to facebook api
-        //    // recive answer from faceook api
-        //    var values = new Dictionary<string, string>
-        //    {
-        //        { "message", msg },
-        //        { "access_token", accessToken }
-        //    };
-
-        //    var content = new FormUrlEncodedContent(values);
-
-        //    var response = await client.PostAsync(url, content);
-
-        //    var responseString = await response.Content.ReadAsStringAsync();
-        //    //def post_to_page()
-        //    //    def post_to_page(access_token, url, msg):
-        //    //    payload = {"message": msg, "access_token": access_token
-        //    //response = requests.post(url, data = payload)
-        //}
     }
 }
 
