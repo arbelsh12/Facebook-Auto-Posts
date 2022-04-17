@@ -6,7 +6,7 @@ namespace FacebookAutoPost.Data
 {
     public class ApplicationDbContext :DbContext
     {
-        public DbSet<AutoPost> AutoPosts { get; set; }
+        public DbSet<AutoPost> AutoPosts { get; set; } // name of table in DB ??
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

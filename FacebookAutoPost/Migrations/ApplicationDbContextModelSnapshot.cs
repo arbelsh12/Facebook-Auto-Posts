@@ -21,6 +21,9 @@ namespace FacebookAutoPost.Migrations
                     b.Property<string>("PageId")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ApiKey")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Frequency")
                         .HasColumnType("TEXT");
 
@@ -31,9 +34,14 @@ namespace FacebookAutoPost.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Uri")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserAPI")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("PageId");
