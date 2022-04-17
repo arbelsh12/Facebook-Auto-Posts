@@ -23,6 +23,10 @@ namespace FacebookAutoPost.Models
         public string PostTemplate { get; set; }
         public string Frequency { get; set; }
         public DateTime Time { get; set; }
+
+        public string ApiKey { get; set; }
+
+        public string Uri { get; set; }
     }
 }
 

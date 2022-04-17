@@ -30,6 +30,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Time)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApiKey)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Uri)
+            </th>
             <th>Change</th>
         </tr>
     </thead>
@@ -53,6 +59,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApiKey)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Uri)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.PageId" class="btn btn-info">Edit</a> |
