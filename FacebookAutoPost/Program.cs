@@ -24,7 +24,6 @@ namespace FacebookAutoPost
 
             //rapidapi();
 
-            //postToPage("EAAI0QhrQa2UBAEWNKLoTNMMzJ6oyC1om3f1DNKTqZCoOvgv2k9klaXPAi4qOQ7e76V9puOhXvxo3FPaPnL3PSDScJM7Aa7KZAlC8wopQbHm5AliaBZAucrZBso6ereZAbO6PBUNlIUPdvB7sOZCv5ZC7Fa9fwpIwVErUY5YWr8XAkgztLs08OcR", "https://graph.facebook.com/109056161633630/feed", "HII");
             
             
             
@@ -109,28 +108,6 @@ namespace FacebookAutoPost
 
         private static readonly HttpClient client = new HttpClient();
 
-        public static async void rapidAeroDataBox()
-        {
-            var client = new HttpClient();
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri("https://api-football-beta.p.rapidapi.com/timezone"),
-                Headers =
-    {
-        { "X-RapidAPI-Host", "api-football-beta.p.rapidapi.com" },
-        { "X-RapidAPI-Key", "c7bbb43d3amsh06773d5821b0217p162510jsn7df70a664fc7" },
-    },
-            };
-            using (var response = await client.SendAsync(request))
-            {
-                response.EnsureSuccessStatusCode();
-                var body = await response.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(body);
-                Console.WriteLine(body);
-            }
-        }
-
         public static async void rapidapi()
         {
             var client = new HttpClient();
@@ -141,7 +118,7 @@ namespace FacebookAutoPost
                 Headers =
                 {
                     { "X-RapidAPI-Host", "hotels4.p.rapidapi.com" },
-                    { "X-RapidAPI-Key", "c7bbb43d3amsh06773d5821b0217p162510jsn7df70a664fc7" },
+                    { "X-RapidAPI-Key", "??" },
                 },
             };
             using (var response = await client.SendAsync(request))
