@@ -1,183 +1,33 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-// shani facebook api
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using FacebookAutoPost.Data;
+using FacebookAutoPost.Models;
 using System.Net.Http;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Text;
-using FacebookAutoPost.Data;
 
 namespace FacebookAutoPost
 {
     public class Program
     {
+        private static PostingProvider _postingProvider;
+        private static PostCreatingProvider _postCreatingProvider;
+        private static ApplicationDbContext _context;
+
         public static void Main(string[] args)
         {
+            _context = new ApplicationDbContext();
+            _postingProvider = new PostingProvider();
+            _postCreatingProvider = new PostCreatingProvider(_context);
 
+            string pageID = "109056161633630";
+            AutoPost user = _context.AutoPosts.Find(pageID);
+            string pageUrl = "https://graph.facebook.com/109056161633630/feed";
 
-            //rapidapi();
+            string postCotent = _postCreatingProvider.CreatePost(pageID).Result;
+            var res = _postingProvider.postToPage(user.Token, pageUrl, postCotent).Result;
 
-            
-            
-            
-            
-            
             CreateHostBuilder(args).Build().Run();
-        }
-        ////// post to facebook////
-
-
-        public static string getValJson(string jPath, JObject json)
-        {
-            var val = json.SelectToken(jPath);
-
-            return val.ToString();
-        }
-
-        public static string getPost(string template, JObject json)
-        {
-            string[] subs = template.Split(' ');
-            StringBuilder post = new StringBuilder();
-            string value;
-
-            foreach (string sub in subs)
-            {
-                value = sub[0] == '$' ? getValJson(sub, json) : sub;
-
-                /*if (sub[0] == '$')
-                {
-                    value = getValJson(sub, json);
-                }
-                else
-                {
-                    value = sub;
-                }*/
-
-                post.Append(value);
-            }
-
-            return post.ToString();
-        }
-
-        private static readonly ApplicationDbContext _context; // DB 
-    
-        public static async Task<string> createPost(string primeryKey, ApplicationDbContext db)
-        {
-            var autoPost = _context.AutoPosts.Find(primeryKey);
-
-            //var autoPost = _context.AutoPosts.Find(x => x.Key == primeryKey);
-            string apiKey ="sdfgh";
-            string uri = "drfgh";
-
-            JObject json = await getJsonFromApi(autoPost.UserAPI, apiKey, uri);
-
-            string post = getPost(autoPost.PostTemplate, json);
-
-            return post;
-        }
-
-        public static async Task<JObject> getJsonFromApi(string api, string apiKey, string uri)
-        {
-            var client = new HttpClient();
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(uri),
-                Headers =
-                {
-                    { "X-RapidAPI-Host", api },
-                    { "X-RapidAPI-Key", apiKey },
-                },
-            };
-            using (var response = await client.SendAsync(request))
-            {
-                response.EnsureSuccessStatusCode();
-                var body = await response.Content.ReadAsStringAsync();
-                JObject json = JObject.Parse(body);
-
-                return json;
-            }
-        }
-
-        private static readonly HttpClient client = new HttpClient();
-
-        public static async void rapidapi()
-        {
-            var client = new HttpClient();
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri("https://hotels4.p.rapidapi.com/locations/v2/search?query=new%20york&locale=en_US&currency=USD"),
-                Headers =
-                {
-                    { "X-RapidAPI-Host", "hotels4.p.rapidapi.com" },
-                    { "X-RapidAPI-Key", "??" },
-                },
-            };
-            using (var response = await client.SendAsync(request))
-            {
-                response.EnsureSuccessStatusCode();
-                var body = await response.Content.ReadAsStringAsync();
-                JObject json = JObject.Parse(body);
-
-
-                var name = json.SelectToken("suggestions[0].entities[0].geoId");
-
-                //var autoPosts = _context.AutoPosts.ToList();
-                //autoPosts.ForEach(autoPosts => autoPosts.PageId)
-
-                dynamic stuff = JsonConvert.DeserializeObject(body);
-
-                var values1 = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(body);
-
-                var values = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(json.ToString());
-
-                Console.WriteLine(body);
-            }
-        }
-        // path = a/b/c/.../target
-        //public static string getValueJson(string path, Dictionary<string, string> json)
-        //{
-        //    string[] subs = path.Split('/');
-
-        //    for (int i = 0; i < subs.Length; i++) 
-        //    {
-        //        string key = subs[i];
-        //        var value;
-
-        //        if (!json.TryGetValue(key, out value))
-        //        {
-        //            // the key isn't in the dictionary.
-        //            return; // or whatever you want to do
-        //        }
-        //        // value is now equal to the value
-        //    }
-
-        //}
-
-        public static async void postToPage(string accessToken, string url, string msg)
-        {
-            //make_msg
-            var values = new Dictionary<string, string>
-            {
-                { "message", msg },
-                { "access_token", accessToken }
-            };
-
-            var content = new FormUrlEncodedContent(values);
-
-            //send request to facebook api
-            // recive answer from faceook api
-            var response = await client.PostAsync(url, content);
-
-            var responseString = await response.Content.ReadAsStringAsync();
         }
 
         //starts the web app
