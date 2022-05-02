@@ -1,25 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Academic\\Sadna\\Facebook-Auto-Posts\\FacebookAutoPost\\FacebookAutoPost.csproj": {}
+    "C:\\Users\\shani\\Desktop\\git_project\\Facebook-Auto-Posts\\FacebookAutoPost\\FacebookAutoPost.csproj": {}
   },
   "projects": {
-    "C:\\Academic\\Sadna\\Facebook-Auto-Posts\\FacebookAutoPost\\FacebookAutoPost.csproj": {
+    "C:\\Users\\shani\\Desktop\\git_project\\Facebook-Auto-Posts\\FacebookAutoPost\\FacebookAutoPost.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Academic\\Sadna\\Facebook-Auto-Posts\\FacebookAutoPost\\FacebookAutoPost.csproj",
+        "projectUniqueName": "C:\\Users\\shani\\Desktop\\git_project\\Facebook-Auto-Posts\\FacebookAutoPost\\FacebookAutoPost.csproj",
         "projectName": "FacebookAutoPost",
-        "projectPath": "C:\\Academic\\Sadna\\Facebook-Auto-Posts\\FacebookAutoPost\\FacebookAutoPost.csproj",
-        "packagesPath": "C:\\Users\\arbel\\.nuget\\packages\\",
-        "outputPath": "C:\\Academic\\Sadna\\Facebook-Auto-Posts\\FacebookAutoPost\\obj\\",
+        "projectPath": "C:\\Users\\shani\\Desktop\\git_project\\Facebook-Auto-Posts\\FacebookAutoPost\\FacebookAutoPost.csproj",
+        "packagesPath": "C:\\Users\\shani\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\shani\\Desktop\\git_project\\Facebook-Auto-Posts\\FacebookAutoPost\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\arbel\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\shani\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -70,6 +68,10 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[5.0.2, )"
+            },
+            "NewsAPI": {
+              "target": "Package",
+              "version": "[0.6.0, )"
             }
           },
           "imports": [
@@ -90,7 +92,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

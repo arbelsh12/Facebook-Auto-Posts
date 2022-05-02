@@ -934,6 +934,18 @@
           }
         }
       },
+      "NewsAPI/0.6.0": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "10.0.3"
+        },
+        "compile": {
+          "lib/portable45-net45+win8+wpa81/NewsAPI.dll": {}
+        },
+        "runtime": {
+          "lib/portable45-net45+win8+wpa81/NewsAPI.dll": {}
+        }
+      },
       "Newtonsoft.Json/11.0.2": {
         "type": "package",
         "compile": {
@@ -3823,6 +3835,18 @@
         "runtimes/win/lib/netcoreapp3.0/Microsoft.Win32.SystemEvents.xml",
         "useSharedDesignerContext.txt",
         "version.txt"
+      ]
+    },
+    "NewsAPI/0.6.0": {
+      "sha512": "sS2W+VHUPT8pXmFla6GvESgTdnRcieSZsCcqCCu7IOSuqJotMERn8FXof/Y0F3m7ESMv5v3QHwuhMM514m35kA==",
+      "type": "package",
+      "path": "newsapi/0.6.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/portable45-net45+win8+wpa81/NewsAPI.dll",
+        "newsapi.0.6.0.nupkg.sha512",
+        "newsapi.nuspec"
       ]
     },
     "Newtonsoft.Json/11.0.2": {
@@ -7492,30 +7516,28 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 5.0.15",
       "Microsoft.EntityFrameworkCore.Sqlite >= 5.0.15",
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.15",
-      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 5.0.2"
+      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 5.0.2",
+      "NewsAPI >= 0.6.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\arbel\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Users\\shani\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Academic\\Sadna\\Facebook-Auto-Posts\\FacebookAutoPost\\FacebookAutoPost.csproj",
+      "projectUniqueName": "C:\\Users\\shani\\Desktop\\git_project\\Facebook-Auto-Posts\\FacebookAutoPost\\FacebookAutoPost.csproj",
       "projectName": "FacebookAutoPost",
-      "projectPath": "C:\\Academic\\Sadna\\Facebook-Auto-Posts\\FacebookAutoPost\\FacebookAutoPost.csproj",
-      "packagesPath": "C:\\Users\\arbel\\.nuget\\packages\\",
-      "outputPath": "C:\\Academic\\Sadna\\Facebook-Auto-Posts\\FacebookAutoPost\\obj\\",
+      "projectPath": "C:\\Users\\shani\\Desktop\\git_project\\Facebook-Auto-Posts\\FacebookAutoPost\\FacebookAutoPost.csproj",
+      "packagesPath": "C:\\Users\\shani\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\shani\\Desktop\\git_project\\Facebook-Auto-Posts\\FacebookAutoPost\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\arbel\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\shani\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -7566,6 +7588,10 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",
             "version": "[5.0.2, )"
+          },
+          "NewsAPI": {
+            "target": "Package",
+            "version": "[0.6.0, )"
           }
         },
         "imports": [
@@ -7586,8 +7612,20 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'NewsAPI 0.6.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.",
+      "libraryId": "NewsAPI",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    }
+  ]
 }

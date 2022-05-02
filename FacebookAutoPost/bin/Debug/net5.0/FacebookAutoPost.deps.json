@@ -39,6 +39,7 @@
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.15",
           "Microsoft.EntityFrameworkCore.Tools": "5.0.15",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "5.0.2",
+          "NewsAPI": "0.6.0",
           "Microsoft.AspNetCore.Antiforgery": "5.0.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "5.0.0.0",
           "Microsoft.AspNetCore.Authentication.Cookies": "5.0.0.0",
@@ -1162,6 +1163,20 @@
       "Microsoft.Win32.SystemEvents/4.7.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "3.1.0"
+        }
+      },
+      "NewsAPI/0.6.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "11.0.2"
+        },
+        "runtime": {
+          "lib/portable45-net45+win8+wpa81/NewsAPI.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/portable45-net45+win8+wpa81/NewsAPI.dll": {}
         }
       },
       "Newtonsoft.Json/11.0.2": {
@@ -4096,6 +4111,13 @@
       "sha512": "sha512-mtVirZr++rq+XCDITMUdnETD59XoeMxSpLRIII7JRI6Yj0LEDiO1pPn0ktlnIj12Ix8bfvQqQDMMIF9wC98oCA==",
       "path": "microsoft.win32.systemevents/4.7.0",
       "hashPath": "microsoft.win32.systemevents.4.7.0.nupkg.sha512"
+    },
+    "NewsAPI/0.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-sS2W+VHUPT8pXmFla6GvESgTdnRcieSZsCcqCCu7IOSuqJotMERn8FXof/Y0F3m7ESMv5v3QHwuhMM514m35kA==",
+      "path": "newsapi/0.6.0",
+      "hashPath": "newsapi.0.6.0.nupkg.sha512"
     },
     "Newtonsoft.Json/11.0.2": {
       "type": "package",

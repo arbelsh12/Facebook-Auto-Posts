@@ -18,6 +18,11 @@ namespace FacebookAutoPost.Models
             _context = context;
         }
 
+        public PostCreatingProvider()
+        {
+            _context = null;
+        }
+
         public async Task<string> CreatePost(string primeryKey)
         {
             var autoPost = _context.AutoPosts.Find(primeryKey);
@@ -31,7 +36,7 @@ namespace FacebookAutoPost.Models
             return post;
         }
 
-        private string getValJson(string jPath, JObject json)
+        public string getValJson(string jPath, JObject json)
         {
             var val = json.SelectToken(jPath);
 
@@ -53,7 +58,7 @@ namespace FacebookAutoPost.Models
             return post.ToString();
         }
 
-        private async Task<JObject> getJsonFromApi(string api, string apiKey, string uri)
+        public async Task<JObject> getJsonFromApi(string api, string apiKey, string uri)
         {
             var client = new HttpClient();
             var request = new HttpRequestMessage
