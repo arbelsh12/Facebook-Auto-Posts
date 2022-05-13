@@ -1365,4 +1365,4 @@ C:\Academic\Sadna\Facebook-Auto-Posts\FacebookAutoPost\obj\Debug\net5.0\Facebook
 C:\Academic\Sadna\Facebook-Auto-Posts\FacebookAutoPost\obj\Debug\net5.0\ref\FacebookAutoPost.dll
 C:\Academic\Sadna\Facebook-Auto-Posts\FacebookAutoPost\obj\Debug\net5.0\FacebookAutoPost.pdb
 C:\Academic\Sadna\Facebook-Auto-Posts\FacebookAutoPost\obj\Debug\net5.0\FacebookAutoPost.genruntimeconfig.cache
-C:\Academic\Sadna\Facebook-Auto-Posts\FacebookAutoPost\obj\Debug\net5.0\refint\FacebookAutoPost.dll
+C:\Academic\Sadna\Facebook-Auto-Posts\FacebookAutoPost\bin\Debug\net5.0\ref\FacebookAutoPost.dll
