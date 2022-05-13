@@ -18,27 +18,32 @@ namespace FacebookAutoPost.Models
             _context = context;
         }
 
-        public async Task<string> CreatePost(string primeryKey)
+        public async Task<string> CreatePost(string primeryKey, bool planeJsonPath = false)
         {
             var autoPost = _context.AutoPosts.Find(primeryKey);
 
-            //var autoPost = _context.AutoPosts.Find(x => x.Key == primeryKey);
-
             JObject json = await getJsonFromApi(autoPost.UserAPI, autoPost.ApiKey, autoPost.Uri);
 
-            string post = getPost(autoPost.PostTemplate, json);
+            string post = getPost(autoPost.PostTemplate, json, planeJsonPath);
+            post = $"{post}"; //making string interpolated
 
             return post;
         }
 
-        private string getValJson(string jPath, JObject json)
+        // planePath parameter sets if the token needs to starts with "$." string or not.
+        // for JokesAPI needs to starts without $.
+        private string getValJson(string jPath, JObject json, bool planePath)
         {
+            jPath = planePath ? jPath.Substring(2) : jPath;
+
             var val = json.SelectToken(jPath);
 
             return val.ToString();
         }
 
-        private string getPost(string template, JObject json)
+        // planePath parameter sets if the token needs to starts with "$." string or not.
+        // for JokesAPI needs to starts without $.
+        private string getPost(string template, JObject json, bool planePath = false)
         {
             string[] subs = template.Split(' ');
             StringBuilder post = new StringBuilder();
@@ -46,7 +51,7 @@ namespace FacebookAutoPost.Models
 
             foreach (string sub in subs)
             {
-                value = sub[0] == '$' ? getValJson(sub, json) : sub;
+                value = sub[0] == '$' ? getValJson(sub, json, planePath) : sub;
                 post.Append(value + ' ');
             }
 
