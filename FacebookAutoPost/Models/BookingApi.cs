@@ -18,21 +18,36 @@ namespace FacebookAutoPost.Models
 
         private Random rnd;
 
+        private readonly ApplicationDbContext _context;
 
 
         private static PostCreatingProvider _postCreatingProvider;
+        private readonly PostingProvider _postingProvider;
+
         //private static ApplicationDbContext _context;
 
 
 
-        public BookingApi()
+        public BookingApi(ApplicationDbContext context)
         {
             //_context = new ApplicationDbContext();
             _postCreatingProvider = new PostCreatingProvider();
             rnd = new Random();
 
+            _context = context;
+
             cities = new List<string> { "Tel Aviv", "Jerusalem", "Athens", "Rome", "Milan", "Vienna", "Munich", "Berlin", "Zurich", "Amsterdam", "London", "Paris", "Madrid", "Barcelona", "Prague", "Budapest", "Lisbon", "New York", "Miami", "San Francisco", "Rio De Janeiro", "Lima", "Buenos Aires", "Dubai", "Sydney", "Bangkok", "Hong Kong", "Tokyo" };
         }
+
+        public void PostToPage(string pageID)
+        {
+            AutoPost user = _context.AutoPosts.Find(pageID);
+
+            string postCotent = _postCreatingProvider.CreatePost(pageID).Result;
+
+            string pageUrl = "https://graph.facebook.com/" + pageID + "/feed";
+
+            var res = _postingProvider.postToPage(user.Token, pageUrl, postCotent).Result;        }
 
         private async Task<string> getCheckIn()
         {

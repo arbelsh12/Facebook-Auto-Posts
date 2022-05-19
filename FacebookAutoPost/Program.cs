@@ -27,17 +27,21 @@ namespace FacebookAutoPost
         {
 
 
-            BookingApi book = new BookingApi();
+            BookingApi book = new BookingApi(_context);
+
+            book.PostToPage("109056161633630");
             var post = book.getHotelPost();
 
             //var id = book.gteDestId("Berlin");
 
             //NewsApi n = new NewsApi();
             //string post = n.getNewsTechArticle(Categories.Technology);
-            _postingProvider = new PostingProvider();
-            string pageID = "109056161633630";
-            _context = new ApplicationDbContext();
 
+
+            _postingProvider = new PostingProvider();
+            string pageID = "109056161633630"; // sadna shani and arbel
+            _context = new ApplicationDbContext();
+        
             AutoPost user = _context.AutoPosts.Find(pageID);
             string pageUrl = "https://graph.facebook.com/109056161633630/feed";
             var res = _postingProvider.postToPage(user.Token, pageUrl, post.Result).Result;
