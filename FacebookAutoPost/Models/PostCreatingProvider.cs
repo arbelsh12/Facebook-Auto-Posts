@@ -18,6 +18,11 @@ namespace FacebookAutoPost.Models
             _context = context;
         }
 
+        public PostCreatingProvider()
+        {
+            _context = null;
+        }
+
         public async Task<string> CreatePost(string primeryKey, bool planeJsonPath = false)
         {
             var autoPost = _context.AutoPosts.Find(primeryKey);
@@ -25,14 +30,14 @@ namespace FacebookAutoPost.Models
             JObject json = await getJsonFromApi(autoPost.UserAPI, autoPost.ApiKey, autoPost.Uri);
 
             string post = getPost(autoPost.PostTemplate, json, planeJsonPath);
-            post = $"{post}"; //making string interpolated
+            post = @"{post}"; //making string interpolated
 
             return post;
         }
 
         // planePath parameter sets if the token needs to starts with "$." string or not.
         // for JokesAPI needs to starts without $.
-        private string getValJson(string jPath, JObject json, bool planePath)
+        private string getValJson(string jPath, JObject json, bool planePath = false)
         {
             jPath = planePath ? jPath.Substring(2) : jPath;
 
@@ -58,7 +63,7 @@ namespace FacebookAutoPost.Models
             return post.ToString();
         }
 
-        private async Task<JObject> getJsonFromApi(string api, string apiKey, string uri)
+        public async Task<JObject> getJsonFromApi(string api, string apiKey, string uri)
         {
             var client = new HttpClient();
             var request = new HttpRequestMessage
