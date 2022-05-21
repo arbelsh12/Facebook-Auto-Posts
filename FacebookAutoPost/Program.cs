@@ -22,26 +22,25 @@ namespace FacebookAutoPost
         private static PostingProvider _postingProvider;
         private static PostCreatingProvider _postCreatingProvider;
         private static ApplicationDbContext _context;
+        private static JokesAPI _jokesAPI;
 
         public static void Main(string[] args)
         {
 
 
-            BookingApi book = new BookingApi(_context);
-
-            book.PostToPage("109056161633630");
+            BookingApi book = new BookingApi();
             var post = book.getHotelPost();
 
             //var id = book.gteDestId("Berlin");
 
             //NewsApi n = new NewsApi();
             //string post = n.getNewsTechArticle(Categories.Technology);
-
-
             _postingProvider = new PostingProvider();
-            string pageID = "109056161633630"; // sadna shani and arbel
+            string pageID = "109056161633630";
             _context = new ApplicationDbContext();
-        
+
+            // general post creation
+            string pageID = "109056161633630";
             AutoPost user = _context.AutoPosts.Find(pageID);
             string pageUrl = "https://graph.facebook.com/109056161633630/feed";
             var res = _postingProvider.postToPage(user.Token, pageUrl, post.Result).Result;
@@ -58,7 +57,12 @@ namespace FacebookAutoPost
             ////string postCotent = _postCreatingProvider.CreatePost(pageID).Result;
             ////var res = _postingProvider.postToPage(user.Token, pageUrl, postCotent).Result;
 
-            CreateHostBuilder(args).Build().Run();
+            //Joke post
+            _jokesAPI = new JokesAPI(_context);
+            string pageID2 = "107638691815379";
+            _jokesAPI.PostToPage(pageID2);
+
+          //  CreateHostBuilder(args).Build().Run();
         }
 
         public static async void f()
