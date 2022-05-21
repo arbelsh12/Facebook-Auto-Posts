@@ -18,20 +18,39 @@ namespace FacebookAutoPost.Models
 
         private Random rnd;
 
+        private readonly ApplicationDbContext _context;
 
 
         private static PostCreatingProvider _postCreatingProvider;
+        private readonly PostingProvider _postingProvider;
+
         //private static ApplicationDbContext _context;
 
 
 
-        public BookingApi()
+        public BookingApi(ApplicationDbContext context)
         {
             //_context = new ApplicationDbContext();
             _postCreatingProvider = new PostCreatingProvider();
             rnd = new Random();
 
+            _context = context;
+            _postingProvider = new PostingProvider();
+
             cities = new List<string> { "Tel Aviv", "Jerusalem", "Athens", "Rome", "Milan", "Vienna", "Munich", "Berlin", "Zurich", "Amsterdam", "London", "Paris", "Madrid", "Barcelona", "Prague", "Budapest", "Lisbon", "New York", "Miami", "San Francisco", "Rio De Janeiro", "Lima", "Buenos Aires", "Dubai", "Sydney", "Bangkok", "Hong Kong", "Tokyo" };
+        }
+
+        public async void postToPage(string pageID)
+        {
+            AutoPost user = _context.AutoPosts.Find(pageID);
+
+            //string postCotent = _postCreatingProvider.CreatePost(pageID).Result;
+
+            var post = await getHotelPost();
+
+            string pageUrl = "https://graph.facebook.com/" + pageID + "/feed";
+
+            var res = _postingProvider.postToPage(user.Token, pageUrl, post).Result;      
         }
 
         private async Task<string> getCheckIn()
@@ -105,7 +124,8 @@ namespace FacebookAutoPost.Models
             int destId = await getDestId(dest);
             string checkIn = await getCheckIn();
             string checkOut = await getCheckOut(checkIn);
-            string adultsNum = await getAdultNum();
+            //string adultsNum = await getAdultNum();
+            string adultsNum = "2";
 
 
             //string id = "-553173";
