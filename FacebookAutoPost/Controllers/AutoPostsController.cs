@@ -12,7 +12,7 @@ namespace FacebookAutoPost.Controllers
 {
     public class AutoPostsController : Controller
     {
-        private readonly ApplicationDbContext _context; // DB ?
+        private readonly ApplicationDbContext _context;
 
         public AutoPostsController(ApplicationDbContext context)
         {

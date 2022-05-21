@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewData["Title"] = "Post";
+}
+
+<h1>Post to page</h1>
+
+<div>
+    <input type="button"
+         value="Post a joke"
+         onclick="location.href='@Url.Action("Joke", "Posting")'" />
+</div>

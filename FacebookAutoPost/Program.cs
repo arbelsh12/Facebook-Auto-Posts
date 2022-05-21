@@ -27,7 +27,7 @@ namespace FacebookAutoPost
         public static void Main(string[] args)
         {
 
-            //   CreateHostBuilder(args).Build().Run();
+            //CreateHostBuilder(args).Build().Run();
             _context = new ApplicationDbContext();
 
             //BookingApi book = new BookingApi(_context);
@@ -37,9 +37,9 @@ namespace FacebookAutoPost
             //news.postToPage("105971235456078");
 
             ////Joke post
-            _jokesAPI = new JokesAPI(_context);
-            string pageID2 = "107638691815379";
-            _jokesAPI.PostToPage(pageID2);
+            //_jokesAPI = new JokesAPI(_context);
+            //string pageID2 = "107638691815379";
+            //_jokesAPI.PostToPage(pageID2);
 
 
 
@@ -71,31 +71,6 @@ namespace FacebookAutoPost
 
 
             CreateHostBuilder(args).Build().Run();
-        }
-
-        public static async void f()
-        {
-            var client = new HttpClient();
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri("https://booking-com.p.rapidapi.com/v1/hotels/locations?locale=en-gb&name=Berlin"),
-                Headers =
-    {
-        { "X-RapidAPI-Host", "booking-com.p.rapidapi.com" },
-        { "X-RapidAPI-Key", "c7bbb43d3amsh06773d5821b0217p162510jsn7df70a664fc7" },
-    },
-            };
-            using (var response = await client.SendAsync(request))
-            {
-                response.EnsureSuccessStatusCode();
-                var body = await response.Content.ReadAsStringAsync();
-  
-                JArray json = JArray.Parse(body);
-
-                Debug.WriteLine(body);
-            }
-
         }
 
         //starts the web app
