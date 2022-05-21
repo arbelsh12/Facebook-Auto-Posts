@@ -1,4 +1,6 @@
 ﻿using FacebookAutoPost.Data;
+using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace FacebookAutoPost.Models
 {
@@ -15,12 +17,32 @@ namespace FacebookAutoPost.Models
             _postingProvider = new PostingProvider();
         }
 
-        public void PostToPage(string pageID)
+        public async void PostToPage(string pageID)
         {
             AutoPost user = _context.AutoPosts.Find(pageID);
 
-            string postCotent = _postCreatingProvider.CreatePost(pageID , true).Result;
+            string postCotent = await CreatePost(user);
             var res = _postingProvider.postToPage(user.Token, user.PageUrl, postCotent).Result;
+        }
+
+        public async Task<string> CreatePost(AutoPost autoPost)
+        {
+            JObject json = await _postCreatingProvider.getJsonFromApi(autoPost.UserAPI, autoPost.ApiKey, autoPost.Uri);
+
+            string joke = getValJson("body[0].setup", json);
+            string punchline = getValJson("body[0].punchline", json);
+
+            string post = string.Format(@"{0}
+{1}",joke, punchline);
+
+            return post;
+        }
+
+        public string getValJson(string jPath, JObject json)
+        {
+            var val = json.SelectToken(jPath);
+
+            return val.ToString();
         }
     }
 }
