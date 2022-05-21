@@ -23,10 +23,10 @@ namespace FacebookAutoPost.Models
             _context = null;
         }
 
-        public async Task<string> CreatePost(string primeryKey)
-        {
-            _context = null;
-        }
+        //public async Task<string> CreatePost(string primeryKey)
+        //{
+        //    _context = null;
+        //}
 
         public async Task<string> CreatePost(string primeryKey, bool planeJsonPath = false)
         {
@@ -35,7 +35,7 @@ namespace FacebookAutoPost.Models
             JObject json = await getJsonFromApi(autoPost.UserAPI, autoPost.ApiKey, autoPost.Uri);
 
             string post = getPost(autoPost.PostTemplate, json, planeJsonPath);
-            post = @"{post}"; //making string interpolated
+            post = post = $@"{post}"; //making string interpolated
 
             return post;
         }

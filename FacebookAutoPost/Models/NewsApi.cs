@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using FacebookAutoPost.Data;
 
 namespace FacebookAutoPost.Models
 {
@@ -12,12 +13,36 @@ namespace FacebookAutoPost.Models
     {
         private List<string> source = new List<string> { "hacker-news", "techcrunch" };
 
-        public NewsApi()
+        //private readonly HttpClient client = new HttpClient();
+
+        private Random rnd;
+
+        private readonly ApplicationDbContext _context;
+        private static PostCreatingProvider _postCreatingProvider;
+        private readonly PostingProvider _postingProvider;
+
+        public NewsApi(ApplicationDbContext context)
         {
+            rnd = new Random();
+
+            _context = context;
+            _postingProvider = new PostingProvider();
+            _postCreatingProvider = new PostCreatingProvider();
 
         }
 
-        public string getNewsTechArticle(Categories category)
+        public async void postToPage(string pageID)
+        {
+            AutoPost user = _context.AutoPosts.Find(pageID);
+
+            var post = await getNewsTechArticle(Categories.Technology);
+
+            string pageUrl = "https://graph.facebook.com/" + pageID + "/feed";
+
+            var res = _postingProvider.postToPage(user.Token, pageUrl, post).Result;
+        }
+
+        public async Task<string> getNewsTechArticle(Categories category)
         {
             // init with your API key
             var newsApiClient = new NewsApiClient("311ac93dac7141d6af842c38a7bd0976");
@@ -35,16 +60,14 @@ namespace FacebookAutoPost.Models
                 // total results found
                 //Debug.WriteLine(articlesResponse.TotalResults);
 
-                Random rnd = new Random();
                 int idx = rnd.Next(0, articleRes.Articles.Count);
                 Article article = articleRes.Articles[idx];
                 Debug.WriteLine(article.Content);
 
                 string post = string.Format(@"{0}
 {1}
-It is an article that was published in {2}.
 
-To read the full article go to {3} ", article.Title, article.Description, article.Source, article.Url);
+To read the full article go to {3} ", article.Title, article.Description, article.Url);
                 Debug.WriteLine(post);
 
                 return post;

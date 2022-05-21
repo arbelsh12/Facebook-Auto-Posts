@@ -27,26 +27,35 @@ namespace FacebookAutoPost
         public static void Main(string[] args)
         {
 
+            _context = new ApplicationDbContext();
 
-            BookingApi book = new BookingApi();
-            var post = book.getHotelPost();
+            //BookingApi book = new BookingApi(_context);
+            //book.postToPage("109056161633630");
 
-            //var id = book.gteDestId("Berlin");
+            //NewsApi news = new NewsApi(_context);
+            //news.postToPage("105971235456078");
+
+            ////Joke post
+            _jokesAPI = new JokesAPI(_context);
+            string pageID2 = "107638691815379";
+            _jokesAPI.PostToPage(pageID2);
+
+
+
 
             //NewsApi n = new NewsApi();
             //string post = n.getNewsTechArticle(Categories.Technology);
-            _postingProvider = new PostingProvider();
-            string pageID = "109056161633630";
-            _context = new ApplicationDbContext();
+            //_postingProvider = new PostingProvider();
+            //string pageID = "109056161633630";
+            //_context = new ApplicationDbContext();
 
-            // general post creation
-            string pageID = "109056161633630";
-            AutoPost user = _context.AutoPosts.Find(pageID);
-            string pageUrl = "https://graph.facebook.com/109056161633630/feed";
-            var res = _postingProvider.postToPage(user.Token, pageUrl, post.Result).Result;
+            //// general post creation
+            //string pageID = "109056161633630";
+            //AutoPost user = _context.AutoPosts.Find(pageID);
+            //string pageUrl = "https://graph.facebook.com/109056161633630/feed";
+            //var res = _postingProvider.postToPage(user.Token, pageUrl, post.Result).Result;
 
 
-            ////_context = new ApplicationDbContext();
             ////_postingProvider = new PostingProvider();
             ////_postCreatingProvider = new PostCreatingProvider(_context);
 
@@ -57,12 +66,9 @@ namespace FacebookAutoPost
             ////string postCotent = _postCreatingProvider.CreatePost(pageID).Result;
             ////var res = _postingProvider.postToPage(user.Token, pageUrl, postCotent).Result;
 
-            //Joke post
-            _jokesAPI = new JokesAPI(_context);
-            string pageID2 = "107638691815379";
-            _jokesAPI.PostToPage(pageID2);
 
-          //  CreateHostBuilder(args).Build().Run();
+
+            CreateHostBuilder(args).Build().Run();
         }
 
         public static async void f()
