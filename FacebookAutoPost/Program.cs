@@ -27,6 +27,7 @@ namespace FacebookAutoPost
         public static void Main(string[] args)
         {
 
+            //   CreateHostBuilder(args).Build().Run();
             _context = new ApplicationDbContext();
 
             //BookingApi book = new BookingApi(_context);
@@ -39,6 +40,7 @@ namespace FacebookAutoPost
             _jokesAPI = new JokesAPI(_context);
             string pageID2 = "107638691815379";
             _jokesAPI.PostToPage(pageID2);
+
 
 
 
