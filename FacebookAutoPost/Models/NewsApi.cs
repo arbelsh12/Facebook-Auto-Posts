@@ -67,7 +67,7 @@ namespace FacebookAutoPost.Models
                 string post = string.Format(@"{0}
 {1}
 
-To read the full article go to {3} ", article.Title, article.Description, article.Url);
+To read the full article go to {2} ", article.Title, article.Description, article.Url);
                 Debug.WriteLine(post);
 
                 return post;
