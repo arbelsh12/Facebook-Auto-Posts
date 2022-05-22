@@ -74,11 +74,11 @@ namespace FacebookAutoPost.Models
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri("https://dad-jokes.p.rapidapi.com/random/joke"),
+                RequestUri = new Uri(uri),
                 Headers =
     {
-        { "X-RapidAPI-Host", "dad-jokes.p.rapidapi.com" },
-        { "X-RapidAPI-Key", "51948930a2msheaf8ef91bca2f89p1ebd1fjsnbb262a8c7324" },
+        { "X-RapidAPI-Host", api },
+        { "X-RapidAPI-Key", apiKey },
     },
             };
             using (var response = await client.SendAsync(request))

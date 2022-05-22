@@ -43,7 +43,7 @@ namespace FacebookAutoPost.Controllers
         public IActionResult News()
         {
             string pageID = "105971235456078";
-            _bookingApi.postToPage(pageID);
+            _newsAPI.postToPage(pageID);
 
             return View();
         }
