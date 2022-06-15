@@ -28,7 +28,7 @@ namespace FacebookAutoPost
         public static void Main(string[] args)
         {
            BookingScheduler scheduler = new BookingScheduler();
-           var res = scheduler.sch();
+           var res = scheduler.schCron();
 
 
 
