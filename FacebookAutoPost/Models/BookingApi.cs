@@ -39,6 +39,20 @@ namespace FacebookAutoPost.Models
 
             cities = new List<string> { "Tel Aviv", "Jerusalem", "Athens", "Rome", "Milan", "Vienna", "Munich", "Berlin", "Zurich", "Amsterdam", "London", "Paris", "Madrid", "Barcelona", "Prague", "Budapest", "Lisbon", "New York", "Miami", "San Francisco", "Rio De Janeiro", "Lima", "Buenos Aires", "Dubai", "Sydney", "Bangkok", "Hong Kong", "Tokyo" };
         }
+        public async Task<int> postToPage(string pageID, string test)
+        {
+            AutoPost user = _context.AutoPosts.Find(pageID);
+
+            //string postCotent = _postCreatingProvider.CreatePost(pageID).Result;
+
+            var post = await getHotelPost();
+
+            string pageUrl = "https://graph.facebook.com/" + pageID + "/feed";
+
+            var res = _postingProvider.postToPage(user.Token, pageUrl, post).Result;
+
+            return 1;
+        }
 
         public async void postToPage(string pageID)
         {

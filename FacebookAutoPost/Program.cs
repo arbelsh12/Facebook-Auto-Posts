@@ -15,6 +15,7 @@ using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 /// </summary>
 
+
 namespace FacebookAutoPost
 {
     public class Program
@@ -26,6 +27,14 @@ namespace FacebookAutoPost
 
         public static void Main(string[] args)
         {
+           BookingScheduler scheduler = new BookingScheduler();
+           var res = scheduler.sch();
+
+
+
+
+
+
 
             //CreateHostBuilder(args).Build().Run();
             _context = new ApplicationDbContext();
