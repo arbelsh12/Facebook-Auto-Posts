@@ -42,7 +42,7 @@ namespace FacebookAutoPost.Models
             return 1;
         }
 
-        public async Task<int> schCron(IJobDetail job, string cron, string forJob, string jobGroup)
+        private async Task<int> schCron(IJobDetail job, string cron, string forJob, string jobGroup)
         {
             // get a scheduler
             IScheduler scheduler = await factory.GetScheduler();
@@ -59,6 +59,36 @@ namespace FacebookAutoPost.Models
                 .Build(); // NEED await? 
 
             await scheduler.ScheduleJob(job, trigger);
+
+            return 1;
+        }
+
+        public async Task<int> schCronJokes(string cron, string forJob, string jobGroup)
+        {
+            // define the job and tie it to our HelloJob class
+            IJobDetail job = getPostJokesJob(forJob, jobGroup); // NEED await? 
+
+            schCron(job, cron, forJob, jobGroup);
+
+            return 1;
+        }
+
+        public async Task<int> schCronNews(string cron, string forJob, string jobGroup)
+        {
+            // define the job and tie it to our HelloJob class
+            IJobDetail job = getPostNewsJob(forJob, jobGroup); // NEED await? 
+
+            schCron(job, cron, forJob, jobGroup);
+
+            return 1;
+        }
+
+        public async Task<int> schCronBooking(string cron, string forJob, string jobGroup)
+        {
+            // define the job and tie it to our HelloJob class
+            IJobDetail job = getPostBookingJob(forJob, jobGroup); // NEED await? 
+
+            schCron(job, cron, forJob, jobGroup);
 
             return 1;
         }
