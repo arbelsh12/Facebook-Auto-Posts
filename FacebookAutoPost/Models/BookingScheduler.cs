@@ -14,6 +14,11 @@ namespace FacebookAutoPost.Models
             factory = new StdSchedulerFactory();
         }
 
+        // can I make this func general?
+        // this template for
+        // 'schCron(string cron, string forJob, string jobGroup)'
+        // and
+        // 'getPostBookingJob(string forJob, string jobGroup)'
         public async Task<int> schCron()
         {
             // get a scheduler
@@ -37,6 +42,35 @@ namespace FacebookAutoPost.Models
             return 1;
         }
 
+        public async Task<int> schCron(string cron, string forJob, string jobGroup)
+        {
+            // get a scheduler
+            IScheduler scheduler = await factory.GetScheduler();
+            await scheduler.Start();
+
+            // define the job and tie it to our HelloJob class
+            IJobDetail job = getPostBookingJob(forJob, jobGroup); // NEED await? 
+
+            // Trigger the job to run now, and then every 40 seconds
+            ITrigger trigger = TriggerBuilder.Create()
+                .WithIdentity("myTrigger", "group1")
+                .WithCronSchedule(cron)
+                .ForJob(forJob, jobGroup)
+                .Build(); // NEED await? 
+
+            await scheduler.ScheduleJob(job, trigger);
+
+            return 1;
+        }
+
+        public IJobDetail getPostBookingJob(string forJob, string jobGroup)
+        {
+            IJobDetail job = JobBuilder.Create<PostBookingJob>()
+                .WithIdentity(forJob, jobGroup)
+                .Build();
+
+            return job;
+        }
 
         public async Task<int> sch()
         {

@@ -39,6 +39,8 @@ namespace FacebookAutoPost.Models
 
             cities = new List<string> { "Tel Aviv", "Jerusalem", "Athens", "Rome", "Milan", "Vienna", "Munich", "Berlin", "Zurich", "Amsterdam", "London", "Paris", "Madrid", "Barcelona", "Prague", "Budapest", "Lisbon", "New York", "Miami", "San Francisco", "Rio De Janeiro", "Lima", "Buenos Aires", "Dubai", "Sydney", "Bangkok", "Hong Kong", "Tokyo" };
         }
+
+        // added test and return value beacause needed func to be async
         public async Task<int> postToPage(string pageID, string test)
         {
             AutoPost user = _context.AutoPosts.Find(pageID);
