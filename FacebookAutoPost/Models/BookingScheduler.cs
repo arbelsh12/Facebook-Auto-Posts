@@ -42,14 +42,14 @@ namespace FacebookAutoPost.Models
             return 1;
         }
 
-        public async Task<int> schCron(string cron, string forJob, string jobGroup)
+        public async Task<int> schCron(IJobDetail job, string cron, string forJob, string jobGroup)
         {
             // get a scheduler
             IScheduler scheduler = await factory.GetScheduler();
             await scheduler.Start();
 
             // define the job and tie it to our HelloJob class
-            IJobDetail job = getPostBookingJob(forJob, jobGroup); // NEED await? 
+            //IJobDetail job = getPostBookingJob(forJob, jobGroup); // NEED await? 
 
             // Trigger the job to run now, and then every 40 seconds
             ITrigger trigger = TriggerBuilder.Create()
@@ -66,6 +66,24 @@ namespace FacebookAutoPost.Models
         public IJobDetail getPostBookingJob(string forJob, string jobGroup)
         {
             IJobDetail job = JobBuilder.Create<PostBookingJob>()
+                .WithIdentity(forJob, jobGroup)
+                .Build();
+
+            return job;
+        }
+
+        public IJobDetail getPostNewsJob(string forJob, string jobGroup)
+        {
+            IJobDetail job = JobBuilder.Create<PostNewsJob>()
+                .WithIdentity(forJob, jobGroup)
+                .Build();
+
+            return job;
+        }
+
+        public IJobDetail getPostJokesJob(string forJob, string jobGroup)
+        {
+            IJobDetail job = JobBuilder.Create<PostJokesJob>()
                 .WithIdentity(forJob, jobGroup)
                 .Build();
 
