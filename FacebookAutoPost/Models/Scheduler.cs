@@ -17,7 +17,7 @@ namespace FacebookAutoPost.Models
         }
 
        
-        public async Task<int> schCron<T>(string cron, string jobName, string jobGroup, string triggerName) where T : IJob
+        public async Task<int> scheduleCronJob<T>(string cron, string jobName, string jobGroup, string triggerName) where T : IJob
         {
             // define the job and tie it to our HelloJob class
             IJobDetail job = JobBuilder.Create<T>()
