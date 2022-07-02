@@ -31,6 +31,20 @@ namespace FacebookAutoPost.Models
 
         }
 
+        // added test and return value beacause needed func to be async
+        public async Task<int> postToPage(string pageID, string test)
+        {
+            AutoPost user = _context.AutoPosts.Find(pageID);
+
+            var post = await getNewsTechArticle(Categories.Technology);
+
+            string pageUrl = "https://graph.facebook.com/" + pageID + "/feed";
+
+            var res = _postingProvider.postToPage(user.Token, pageUrl, post).Result;
+
+            return 1;
+        }
+
         public async void postToPage(string pageID)
         {
             AutoPost user = _context.AutoPosts.Find(pageID);

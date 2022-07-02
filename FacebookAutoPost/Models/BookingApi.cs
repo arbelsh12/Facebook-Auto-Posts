@@ -12,32 +12,40 @@ namespace FacebookAutoPost.Models
         private const string api = "booking-com.p.rapidapi.com";
         private const string key = "c7bbb43d3amsh06773d5821b0217p162510jsn7df70a664fc7";
 
+        private Random rnd;
         private readonly List<string> cities;
 
         private readonly HttpClient client = new HttpClient();
-
-        private Random rnd;
-
         private readonly ApplicationDbContext _context;
-
-
-        private static PostCreatingProvider _postCreatingProvider;
         private readonly PostingProvider _postingProvider;
 
-        //private static ApplicationDbContext _context;
-
+        private static PostCreatingProvider _postCreatingProvider;
 
 
         public BookingApi(ApplicationDbContext context)
         {
-            //_context = new ApplicationDbContext();
             _postCreatingProvider = new PostCreatingProvider();
             rnd = new Random();
-
             _context = context;
             _postingProvider = new PostingProvider();
 
             cities = new List<string> { "Tel Aviv", "Jerusalem", "Athens", "Rome", "Milan", "Vienna", "Munich", "Berlin", "Zurich", "Amsterdam", "London", "Paris", "Madrid", "Barcelona", "Prague", "Budapest", "Lisbon", "New York", "Miami", "San Francisco", "Rio De Janeiro", "Lima", "Buenos Aires", "Dubai", "Sydney", "Bangkok", "Hong Kong", "Tokyo" };
+        }
+
+        // added test and return value beacause needed func to be async
+        public async Task<int> postToPage(string pageID, string test)
+        {
+            AutoPost user = _context.AutoPosts.Find(pageID);
+
+            //string postCotent = _postCreatingProvider.CreatePost(pageID).Result;
+
+            var post = await getHotelPost();
+
+            string pageUrl = "https://graph.facebook.com/" + pageID + "/feed";
+
+            var res = _postingProvider.postToPage(user.Token, pageUrl, post).Result;
+
+            return 1;
         }
 
         public async void postToPage(string pageID)
@@ -57,15 +65,12 @@ namespace FacebookAutoPost.Models
         {
             DateTime now = DateTime.Now; // out to field in class?
 
-
-            //int day = (now.Day + 30) % 30;
             int month = (now.Month + 1) % 12;
             int year = month == 1 ? now.Year + 1 : now.Year;
 
             string checkIn = string.Format("{0}-{1}-{2}", year, month, now.Day);// "2022-09-30"
 
             return checkIn;
-            //Console.WriteLine("Today's date: {0}", now.Date);
         }
 
         private async Task<string> getCheckOut(string checkIn)
@@ -75,7 +80,6 @@ namespace FacebookAutoPost.Models
             int checkInMonth = Int32.Parse(subs[1]);
             int checkInYear = Int32.Parse(subs[0]);
 
-            //Random rnd = new Random();
             int nights = rnd.Next(1, 7);
             int day = (checkInDay + nights) % 30;
             int month = checkInDay > day ? (checkInMonth + 1) % 12 : checkInMonth;
@@ -87,7 +91,6 @@ namespace FacebookAutoPost.Models
 
         private async Task<string> getAdultNum()
         {
-            //Random rnd = new Random();
             int adults = rnd.Next(1, 4);
 
             return adults.ToString();
@@ -95,7 +98,6 @@ namespace FacebookAutoPost.Models
 
         private async Task<string> getDest()
         {
-            //Random rnd = new Random();
             int idx = rnd.Next(0, cities.Count);
 
             return cities[idx];
@@ -112,12 +114,6 @@ namespace FacebookAutoPost.Models
             return destId;
         }
 
-        //public int getResultLen(JObject json)
-        //{
-        //    string path = "$.result";
-        //    int len = getValJson(path, json).;
-        //}
-
         public async Task<string> getHotelPost()
         {
             string dest = await getDest();
@@ -127,15 +123,10 @@ namespace FacebookAutoPost.Models
             //string adultsNum = await getAdultNum();
             string adultsNum = "2";
 
-
-            //string id = "-553173";
-
             string uri = string.Format("https://booking-com.p.rapidapi.com/v1/hotels/search?checkout_date={0}&units=metric&dest_id={1}&dest_type=city&locale=en-gb&adults_number={2}&order_by=review_score&filter_by_currency=AED&checkin_date={3}&room_number=1", checkOut, destId, adultsNum, checkIn);
-            //string uri = string.Format("https://booking-com.p.rapidapi.com/v1/hotels/search?checkout_date={0}&units=metric&dest_id={1}&dest_type=city&locale=en-gb&adults_number={2}&order_by=review_score&filter_by_currency=AED&checkin_date={3}&room_number=1", checkOut, id, adultsNum, checkIn);
 
             JObject json = await _postCreatingProvider.getJsonFromApi(api, key, uri);
 
-            //Random rnd = new Random();
             //int idx = rnd.Next(0, getResultLen() -1);
             int idx = 0;
 
@@ -190,5 +181,11 @@ For more details go to {9}", dest, name, scoreWord, score, checkIn, checkOut, pr
             }
 
         }
+
+        //public int getResultLen(JObject json)
+        //{
+        //    string path = "$.result";
+        //    int len = getValJson(path, json).;
+        //}
     }
 }
