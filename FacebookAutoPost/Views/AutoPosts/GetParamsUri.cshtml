@@ -1,0 +1,103 @@
+﻿@model FacebookAutoPost.Models.GetParamsUri
+
+
+@{
+    ViewData["Title"] = "Get Params Uri";
+}
+
+<h2> Please enter sources for the paramters in your Uri </h2>
+<h4> template for multiple values per source </h4>
+
+@*
+@for (var i = 0; i < Model.ParamsUri.Count(); i++)
+{
+ <tr>
+            <td>
+                @Html.DisplayFor(Model => Model.ParamsUri[i])
+            </td>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SourceParamsUri[i]" class="control-label"></label>
+                <input asp-for="SourceParamsUri[i]" class="form-control" />
+                <span asp-validation-for="SourceParamsUri" class="text-danger"></span>
+            </div>
+        </tr>
+}*@
+
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="GetParamsUri">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+              <div class="form-group">
+                <input asp-for="PageId" type="hidden" value=@Model.PageId class="form-control" />
+                <span asp-validation-for="ParamOne" class="text-danger"></span>
+            </div>
+
+             <div class="form-group">
+                <label asp-for="ParamOne" class="control-label"></label>
+                <input asp-for="ParamOne" class="form-control" />
+                <span asp-validation-for="ParamOne" class="text-danger"></span>
+            </div>
+      
+            @if( Model.NumParams > 1)
+            {
+                <div class="form-group">
+                <label asp-for="ParamTwo" class="control-label">Param Two Optional</label>
+                <input asp-for="ParamTwo" class="form-control" />
+                <span asp-validation-for="ParamTwo" class="text-danger"></span>
+            </div>
+            }
+            @if (Model.NumParams > 2)
+            {
+                <div class="form-group">
+                    <label asp-for="ParamThree" class="control-label">Param Three Optional</label>
+                <input asp-for="ParamThree" class="form-control" />
+                <span asp-validation-for="ParamThree" class="text-danger"></span>
+            </div>
+            }
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@*
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="GetParamsUri">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ParamOne" class="control-label"></label>
+                <input asp-for="ParamOne" class="form-control" />
+                <span asp-validation-for="ParamOne" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParamTwo" class="control-label">Param Two Optional</label>
+                <input asp-for="ParamTwo" class="form-control" />
+                <span asp-validation-for="ParamTwo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParamThree" class="control-label">Param Three Optional</label>
+                <input asp-for="ParamThree" class="form-control" />
+                <span asp-validation-for="ParamThree" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>*@
