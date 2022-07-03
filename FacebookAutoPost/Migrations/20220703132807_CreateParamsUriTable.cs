@@ -17,7 +17,7 @@ namespace FacebookAutoPost.Migrations
                 },
                constraints: table =>
                {
-                   table.PrimaryKey("PK_AutoPosts", x => x.PageId);
+                   table.PrimaryKey("PK_ParamsUri", x => x.PageId);
                });
         }
 

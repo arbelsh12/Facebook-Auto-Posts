@@ -116,15 +116,21 @@ namespace FacebookAutoPost.Controllers
         public async Task<IActionResult> GetParamsUri([Bind("PageId,ParamOne,ParamTwo,ParamThree")] ParamsUri paramsUri)
         {
             // add params to DB
-            
-            //  NEED THE PAGE ID FRPM GET METHOD!  DONT KNOW HOW TO OR WHAT TO SEARCH
+            if (ModelState.IsValid)
+            {
+                _context.Add(paramsUri);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index)); // insted of return to a View, retrun to an action that returns a View -> to make sure the new View is updated with the new data
+                //return RedirectToAction("SaveParamsSourceUri");
 
-            return RedirectToAction("SaveParamsSourceUri");
+            }
+            return View(paramsUri);
         }
 
 
         public IActionResult SaveParamsSourceUri()
         {
+
             return View();
         }
 
