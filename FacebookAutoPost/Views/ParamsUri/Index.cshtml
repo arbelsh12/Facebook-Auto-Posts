@@ -1,0 +1,53 @@
+﻿@model IEnumerable<FacebookAutoPost.Models.ParamsUri>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Param Uri Table</h1>
+
+<p class="text-right">
+@*    <a asp-action="Create" class="btn btn-primary">Create New</a> <!--why no asp controller?-->
+*@</p>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PageId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParamOne)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParamTwo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParamThree)
+            </th>
+@*            <th>Change</th>
+*@        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PageId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParamOne)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParamTwo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParamThree)
+            </td>
+            @*<td>
+                <a asp-action="Edit" asp-route-id="@item.PageId" class="btn btn-info">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.PageId" class="btn btn-info">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PageId" class="btn btn-danger">Delete</a> <!--why asp-route-id="item.PageId" and not asp-route-id="AutoPost.PageId ??"-->
+            </td>*@
+        </tr>
+}
+    </tbody>
+</table>
