@@ -122,12 +122,12 @@ namespace FacebookAutoPost.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index)); // insted of return to a View, retrun to an action that returns a View -> to make sure the new View is updated with the new data
                 //return RedirectToAction("SaveParamsSourceUri");
-
             }
+
             return View(paramsUri);
         }
 
-
+        // dont need?
         public IActionResult SaveParamsSourceUri()
         {
 

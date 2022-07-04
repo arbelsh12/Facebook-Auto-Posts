@@ -45,7 +45,7 @@
             @if( Model.NumParams > 1)
             {
                 <div class="form-group">
-                <label asp-for="ParamTwo" class="control-label">Param Two Optional</label>
+                <label asp-for="ParamTwo" class="control-label">Param Two</label>
                 <input asp-for="ParamTwo" class="form-control" />
                 <span asp-validation-for="ParamTwo" class="text-danger"></span>
             </div>
@@ -53,7 +53,7 @@
             @if (Model.NumParams > 2)
             {
                 <div class="form-group">
-                    <label asp-for="ParamThree" class="control-label">Param Three Optional</label>
+                    <label asp-for="ParamThree" class="control-label">Param Three</label>
                 <input asp-for="ParamThree" class="form-control" />
                 <span asp-validation-for="ParamThree" class="text-danger"></span>
             </div>
