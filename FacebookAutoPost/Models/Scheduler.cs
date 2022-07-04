@@ -7,8 +7,11 @@ namespace FacebookAutoPost.Models
 {
     public class Scheduler
     {
-        StdSchedulerFactory factory;
-        IScheduler scheduler;
+        private StdSchedulerFactory factory;
+        private IScheduler scheduler;
+
+        private readonly int worked = 1;
+        private readonly int fail = -1;
 
         public Scheduler()
         {
@@ -36,10 +39,30 @@ namespace FacebookAutoPost.Models
             }
             catch (Exception e)
             {
-                return -1;
+                return fail;
             }
 
-            return 1;
+            return worked;
+        }
+
+        public async Task<int> editExitingCronTrigger(string newCron, string group, string oldTriggerName, string newTriggerName)
+        {
+            TriggerKey key = new TriggerKey(oldTriggerName, group);
+
+            ITrigger trigger = TriggerBuilder.Create()
+                .WithIdentity(newTriggerName, group)
+                .WithCronSchedule(newCron)
+                .Build();
+
+            var resRescheduleJob =  await scheduler.RescheduleJob(key, trigger);
+
+            if(resRescheduleJob == null)
+            {
+                return fail;
+            }
+
+            return worked;
+
         }
 
         public async Task initScheduler()
