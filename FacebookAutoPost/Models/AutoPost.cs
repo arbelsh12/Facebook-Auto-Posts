@@ -1,9 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-// shani facebook api
-using System.Net.Http;
-using System.Collections.Generic;
 
 
 namespace FacebookAutoPost.Models
