@@ -34,8 +34,22 @@
             </div>
             <div class="form-group">
                 <label asp-for="Frequency" class="control-label"></label>
-                <input asp-for="Frequency" class="form-control" />
+                 
+                <select id="Frequency">
+                    <option value="">--Please choose an option--</option>
+                    <option value="2Min">Every 2 minutes</option>
+                    <option value="5Min">Every 5 minutes</option>
+                    <option value="30Min">Every 30 minutes</option>
+                    <option value="1Hour">Every 1 hour</option>
+                    <option value="5Hour">Every 1 hours</option>
+                    <option value="day">Once a day</option>
+                    <option value="week">Once a week</option>
+                    <option value="month">Once a month</option>
+                </select>
+                <p></p>
                 <span asp-validation-for="Frequency" class="text-danger"></span>
+                <div id="freqency-selector-group-container">
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="Time" class="control-label"></label>
@@ -63,3 +77,4 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+<script src="~/js/freqencySelector.js"></script>
