@@ -3,6 +3,88 @@ const para = document.querySelector('p');
 
 select.addEventListener('change', setFrequency);
 
+function setTime() {
+    const selectDay = document.querySelector('.selectTimeDay');
+    const choiceDay = selectDay.value;
+
+    if (choiceDay === 'Specific') {
+
+
+        // Get the element where the inputs will be added to
+        var containerTime = document.getElementById("time-freqency-selector-group-container");
+
+        if (containerTime === null) {
+            var containerFather = document.getElementById("freqency-selector-group-container");
+            const timeFreqDiv = document.createElement("div");
+
+            timeFreqDiv.id = "time-freqency-selector-group-container";
+            containerFather.appendChild(timeFreqDiv);
+
+            containerTime = document.getElementById("time-freqency-selector-group-container");
+        }
+        // Remove every children it had before
+        while (containerTime.hasChildNodes()) {
+            containerTime.removeChild(containerTime.lastChild);
+        }
+
+        // Append a node with the text
+        containerTime.appendChild(document.createTextNode("Please enter the requested time:"));
+        // Create a <select> element, set its type and name attributes
+        const timeLabel = document.createElement("label");
+        timeLabel.for = "timeDay";
+        timeLabel.className = "control-label";
+        //timeLabel.text = "Please enter the requested time";
+
+        const timeInput = document.createElement("input");
+        timeInput.for = "timeDay";
+        timeInput.className = "form-control";
+
+        containerTime.appendChild(timeLabel);
+        containerTime.appendChild(timeInput);
+    }
+    else {
+        // Get the element where the inputs will be added to
+        var container = document.getElementById("time-freqency-selector-group-container");
+        // Remove every children it had before
+        while (container.hasChildNodes()) {
+            container.removeChild(container.lastChild);
+        }
+    }
+}
+
+function setFrequency() {
+    const choice = select.value;
+
+    if (choice === 'day') {
+        para.textContent = 'day';
+        dayFrequencySelected();
+
+        const selectSpecific = document.querySelector('.selectTimeDay');
+        selectSpecific.addEventListener('change', setTime);
+    }
+    else if (choice === 'week') {
+        para.textContent = 'week';
+        weekFrequencySelected();
+
+    
+    }
+    else if (choice === 'month') {
+        para.textContent = 'month';
+        monthFrequencySelected();
+
+ 
+    }
+    else {
+        para.textContent = '';
+        // Get the element where the inputs will be added to
+        var container = document.getElementById("freqency-selector-group-container");
+        // Remove every children it had before
+        while (container.hasChildNodes()) {
+            container.removeChild(container.lastChild);
+        }
+    }
+}
+
 function dayFrequencySelected() {
     // Get the element where the inputs will be added to
     const container = document.getElementById("freqency-selector-group-container");
@@ -12,8 +94,11 @@ function dayFrequencySelected() {
     }
     // Append a node with the text
     container.appendChild(document.createTextNode("Please choose if you want a random time at the day or a specific time"));
+
     // Create a <select> element, set its type and name attributes
     const selectTimeDay = document.createElement("select");
+    selectTimeDay.className = "selectTimeDay";
+
     const optionSelect = document.createElement('option');
     optionSelect.text = "--Please choose an option--";
     optionSelect.value = "";
@@ -42,6 +127,8 @@ function weekFrequencySelected() {
     container.appendChild(document.createTextNode("Please choose if you want a random day at the week or a specific day"));
     // Create a <select> element, set its type and name attributes
     const selectDay = document.createElement("select");
+    //selectDay.className = ""
+
     const optionSelect = document.createElement('option');
     optionSelect.text = "--Please choose an option--";
     optionSelect.value = "";
@@ -87,29 +174,5 @@ function monthFrequencySelected() {
     container.appendChild(selectDayMonth);
 }
 
-function setFrequency() {
-    const choice = select.value;
 
-    if (choice === 'day') {
-        para.textContent = 'day';
-        dayFrequencySelected();
-    }
-    else if (choice === 'week') {
-        para.textContent = 'week';
-        weekFrequencySelected();
-    }
-    else if (choice === 'month') {
-        para.textContent = 'month';
-        monthFrequencySelected();
-    }
-    else {
-        para.textContent = '';
-        // Get the element where the inputs will be added to
-        var container = document.getElementById("freqency-selector-group-container");
-        // Remove every children it had before
-        while (container.hasChildNodes()) {
-            container.removeChild(container.lastChild);
-        }
-    }
-}
   
