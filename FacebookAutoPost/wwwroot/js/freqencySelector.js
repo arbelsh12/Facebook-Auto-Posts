@@ -81,40 +81,16 @@ function setDayOfWeek() {
         // Create a <select> element, set its type and name attributes
         const selectDay = document.createElement("select");
 
-        const optionSelect = document.createElement('option');
-        optionSelect.text = "--Please choose an option--";
-        optionSelect.value = "";
-
-        const optionSunday = document.createElement('option');
-        optionSunday.value = "Sunday";
-        optionSunday.text = "Sunday";
-
-        const optionMonday = document.createElement('option');
-        optionMonday.value = "Monday";
-        optionMonday.text = "Monday";
-
-        const optionTuesday = document.createElement('option');
-        optionTuesday.value = "Tuesday";
-        optionTuesday.text = "Tuesday";
-
-        const optionWednesday = document.createElement('option');
-        optionWednesday.value = "Wednesday";
-        optionWednesday.text = "Wednesday";
-
-        const optionThursday = document.createElement('option');
-        optionThursday.value = "Thursday";
-        optionThursday.text = "Thursday";
-
-        const optionFriday = document.createElement('option');
-        optionFriday.value = "Friday";
-        optionFriday.text = "Friday";
-
-        const optionSaturday = document.createElement('option');
-        optionSaturday.value = "Saturday";
-        optionSaturday.text = "Saturday";
+        const optionSelect = myCreateElement('option', "", "--Please choose an option--");
+        const optionSunday = myCreateElement('option', "Sunday", "Sunday");
+        const optionMonday = myCreateElement('option', "Monday", "Monday");
+        const optionTuesday = myCreateElement('option', "Tuesday", "Tuesday");
+        const optionWednesday = myCreateElement('option', "Wednesday", "Wednesday");
+        const optionThursday = myCreateElement('option', "Thursday", "Thursday");
+        const optionFriday = myCreateElement('option', "Friday", "Friday");
+        const optionSaturday = myCreateElement('option', "Saturday", "Saturday");
 
         selectDay.appendChild(optionSelect);
-
         selectDay.appendChild(optionSunday);
         selectDay.appendChild(optionMonday);
         selectDay.appendChild(optionTuesday);
@@ -134,6 +110,15 @@ function setDayOfWeek() {
         }
     }
 }
+
+function myCreateElement(elemType, value, text) {
+    const elem = document.createElement(elemType);
+    elem.value = value;
+    elem.text = text;
+
+    return elem;
+}
+
 
 function setDayOfMonth() {
     const selectDayMonth = document.querySelector('.selectDayMonth');
