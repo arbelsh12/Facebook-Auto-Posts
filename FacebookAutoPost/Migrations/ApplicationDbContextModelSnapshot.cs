@@ -48,6 +48,44 @@ namespace FacebookAutoPost.Migrations
 
                     b.ToTable("AutoPosts");
                 });
+
+            modelBuilder.Entity("FacebookAutoPost.Models.Frequency", b =>
+                {
+                    b.Property<string>("PageId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Cron")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Freaquency")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsRandom")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("PageId");
+
+                    b.ToTable("Frequency");
+                });
+
+            modelBuilder.Entity("FacebookAutoPost.Models.ParamsUri", b =>
+                {
+                    b.Property<string>("PageId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ParamOne")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ParamThree")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ParamTwo")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PageId");
+
+                    b.ToTable("ParamsUri");
+                });
 #pragma warning restore 612, 618
         }
     }

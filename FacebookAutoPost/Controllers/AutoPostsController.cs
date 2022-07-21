@@ -68,16 +68,21 @@ namespace FacebookAutoPost.Controllers
         // *** TEST shani *** // 
         [HttpPost]
         [ValidateAntiForgeryToken] // check if have token - only if logged in - security
-        public async Task<IActionResult> Create([Bind("PageId,Token,UserAPI,PostTemplate,Frequency,Time,ApiKey,Uri")] AutoPost autoPost)
+
+        public async Task<IActionResult> Create([Bind("PageId,Token,UserAPI,PostTemplate,Frequency,Time,ApiKey,Uri,DayRandOrSpecific,MonthDayRandOrSpecific,WeekDayRandOrSpecific,DayOfMonth,DayInWeek,TimeDaySpecific")] PageInput pageInput)
         {
             if (ModelState.IsValid)
             {
                 StamClass stamClass = new StamClass();
-                int numParams = await stamClass.countParamsUri(autoPost.Uri);
-                
+                int numParams = await stamClass.countParamsUri(pageInput.Uri);
+
+               
 
                 if (numParams >= 0)
                 {
+                    // take relevant information from PageInput and create AutoPost
+                    AutoPost autoPost = new AutoPost();
+
                     _context.Add(autoPost);
                     await _context.SaveChangesAsync();
 
@@ -99,7 +104,9 @@ namespace FacebookAutoPost.Controllers
 
                  // insted of return to a View, retrun to an action that returns a View -> to make sure the new View is updated with the new data
             }
-            return View(autoPost);
+
+            //return View(autoPost);
+            return View();
         }
 
 

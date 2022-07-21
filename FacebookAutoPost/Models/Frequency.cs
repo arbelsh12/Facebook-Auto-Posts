@@ -13,7 +13,7 @@ namespace FacebookAutoPost.Models
         [DisplayName("Is Random")]
         public bool IsRandom { get; set; }
 
-        public string Freaquency { get; set; }
+        public string PostFrequency { get; set; }
 
         public string Cron { get; set; }
     }

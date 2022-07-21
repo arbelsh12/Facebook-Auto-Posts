@@ -34,6 +34,19 @@ namespace FacebookAutoPost.Models
         {
             get { return "https://graph.facebook.com/" + PageId +"/feed"; }
         }
+
+        //public string DayRandOrSpecific { get; set; }
+
+        //public string MonthDayRandOrSpecific { get; set; }
+
+        public string WeekDayRandOrSpecific { get; }
+
+        //public string DayOfMonth { get; set; }
+                
+        public string DayInWeek { get; }
+
+        //public string TimeDaySpecific { get; }
+
     }
 }
 
