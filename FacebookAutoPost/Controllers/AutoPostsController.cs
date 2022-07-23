@@ -13,10 +13,17 @@ namespace FacebookAutoPost.Controllers
     public class AutoPostsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private Scheduler scheduler;
+        private readonly int fail = -1;
+        private readonly string schedulerGroup = "General";
+
 
         public AutoPostsController(ApplicationDbContext context)
         {
             _context = context;
+            scheduler = new Scheduler();
+            scheduler.initScheduler();
+
         }
 
         // GET: AutoPosts
@@ -209,19 +216,19 @@ namespace FacebookAutoPost.Controllers
                 if (numParams >= 0)
                 {
                     // take relevant information from PageInput and create AutoPost
-                    AutoPost autoPost = new AutoPost();
-                    autoPost.PageId = pageInput.PageId;
-                    autoPost.ApiKey =   pageInput.ApiKey;
-                    autoPost.Uri = pageInput.Uri;
-                    autoPost.Time = pageInput.Time;
-                    autoPost.PostTemplate =      pageInput.PostTemplate;
-                    autoPost.UserAPI   =    pageInput.UserAPI;
-                    autoPost.Token = pageInput.Token;
-                    autoPost.Frequency = "testtt";
-
+                    AutoPost autoPost = new AutoPost(pageInput.PageId, pageInput.Token, pageInput.UserAPI, pageInput.PostTemplate, pageInput.Frequency, pageInput.Time, pageInput.ApiKey, pageInput.Uri);
 
                     _context.Add(autoPost);
                     await _context.SaveChangesAsync();
+
+                    // schedule job
+                    var scheduled = await scheduler.scheduleCronJob<PostBookingJob>(frequency.Cron, autoPost.PageId, schedulerGroup, autoPost.PageId);
+                    //var scheduled = await scheduler.scheduleCronJob<GeneralJob>(frequency.Cron, autoPost.PageId, schedulerGroup, autoPost.PageId);
+                    
+                    if(scheduled == fail)
+                    {
+                        // failed to schedule job
+                    }
 
                     if (numParams == 0)
                     {
@@ -353,8 +360,21 @@ namespace FacebookAutoPost.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var autoPost = await _context.AutoPosts.FindAsync(id);
+            var paramsUri = await _context.ParamsUri.FindAsync(id);
+            var freq = await _context.Frequency.FindAsync(id);
             _context.AutoPosts.Remove(autoPost);
+
+            if (paramsUri != null)
+            {
+                _context.ParamsUri.Remove(paramsUri);
+            }
+
+            _context.Frequency.Remove(freq);
+
             await _context.SaveChangesAsync();
+
+            var deleted = scheduler.deleteScheduledJob(id, schedulerGroup);
+
             return RedirectToAction(nameof(Index));
         }
 
