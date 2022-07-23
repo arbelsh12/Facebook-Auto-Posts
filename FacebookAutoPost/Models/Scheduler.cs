@@ -65,12 +65,12 @@ namespace FacebookAutoPost.Models
 
         }
 
-        public async Task<string> frequencyToCron(string sec, string min, string hour, string dayMonth, string dayMonthFreq, string dayWeek, string month)
+        public static async Task<string> FrequencyToCron(string sec, string min, string hour, string dayMonth, string dayWeek, string month, bool onceA)
         {
-            string secCron = await getSecCron(sec);
-            string minCron = await getMinCron(min);
-            string hourCron = await getHourCron(hour);
-            string dayMonthCron = await getDayMonthCron(dayMonth, dayMonthFreq);
+            string secCron = await getSecCron(sec, onceA);
+            string minCron = await getMinCron(min, onceA);
+            string hourCron = await getHourCron(hour, onceA);
+            string dayMonthCron = await getDayMonthCron(dayMonth, onceA);
             string dayWeekCron = await getDayWeekCron(dayWeek);
             string monthCron = await getMonthCron(month);
             string year = "*";
@@ -80,103 +80,79 @@ namespace FacebookAutoPost.Models
             return cron;
         }
 
-        private async Task<string> getSecCron(string sec)
+        private static async Task<string> getSecCron(string sec, bool onceA)
         {
             string secCron;
 
-            if (sec == "0")
+            if(onceA || sec == "*" || sec == "0")
             {
-                secCron = "0";
+                secCron = sec; // at a specific sec a day or every sec - *
             }
             else
             {
-                secCron = string.Format("0/{0}", sec);
+                secCron = string.Format("0/{0}", sec); // do every X sec
             }
 
             return secCron;
         }
 
-        private async Task<string> getMinCron(string min)
+        private static async Task<string> getMinCron(string min, bool onceA)
         {
             string minCron;
 
-            if (min == "0")
+            if(onceA || min == "*" || min == "0")
             {
-                minCron = "0";
+                minCron = min; // at a specific min a day or every min - *
             }
             else
             {
-                minCron = string.Format("0/{0}", min);
+                minCron = string.Format("0/{0}", min); // do every X min
+
             }
 
             return minCron;
         }
 
-        private async Task<string> getHourCron(string hour)
+        private static async Task<string> getHourCron(string hour, bool onceA)
         {
             string hourCron;    
 
-            if (hour == "0")
+            if(onceA || hour == "*")
             {
-                hourCron = "*"; // every hour
+                hourCron = hour; // at a specific hour a day, or every hour - *
             }
             else
             {
-                hourCron = string.Format("0/{0}", hour);
+                hourCron = string.Format("0/{0}", hour); // do every X hours
             }
 
             return hourCron;
         }
 
-        private async Task<string> getDayMonthCron(string dayMonth, string dayMonthFreq)
+        private static async Task<string> getDayMonthCron(string dayMonth, bool onceA)
         {
             string  dayMonthCron;
 
-            if (dayMonth == "0")
+            if(onceA || dayMonth == "*" || dayMonth == "?")
             {
-                dayMonthCron = "?";
-            }
-            else if (dayMonth == "every")
-            {
-                dayMonthCron = string.Format("1/{0}", dayMonthFreq); // if dayMonthFreq = 2, it means every 2 days
+                dayMonthCron = dayMonth; // ance a month at a specific date OR * for every day OR ? for it doesnt matter what day of the month
             }
             else
             {
-                dayMonthCron = dayMonth; // only day month specified
+                dayMonthCron = string.Format("1/{0}", dayMonth);
             }
 
             return dayMonthCron;
         }
 
-        private async Task<string> getDayWeekCron(string dayWeek)
+        private static async Task<string> getDayWeekCron(string dayWeek)
         {
-            string dayWeekCron;
-
-            if (dayWeek == "0")
-            {
-                dayWeekCron = "?";
-            }
-            else
-            {
-                dayWeekCron = dayWeek;
-            }
-
-            return dayWeekCron;
+            return dayWeek; // can be a day  SUN-SAT or - '?' that means it doesnt matter at which day in week SUN-SAT
         }
 
-        private async Task<string> getMonthCron(string month)
+        private static async Task<string> getMonthCron(string month)
         {
-            string monthCron;
-            if (month == "0")
-            {
-                monthCron = "*"; // every month
-            }
-            else
-            {
-                monthCron = month; // specific month
-            }
-
-            return monthCron;
+            return month; // can be * to every month, or number for a specific month
         }
 
         public async Task initScheduler()

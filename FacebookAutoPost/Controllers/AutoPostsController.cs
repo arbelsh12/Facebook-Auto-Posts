@@ -65,6 +65,134 @@ namespace FacebookAutoPost.Controllers
         //    return View(autoPost);
         //}
 
+        private async Task <string> getDay(string day)
+        {
+            switch (day)
+            {
+                case "SUN":
+                    return "Sunday";
+                case "MON":
+                    return "Monday";
+                case "TUE":
+                    return "Tuesday";
+                case "WED":
+                    return "Wednesday";
+                case "THU":
+                    return "Thursday";
+                case "FRI":
+                    return "Friday";
+                case "SAT":
+                    return "Saturday";
+            }
+
+            return "ERROR";
+        }
+        private async Task<Frequency> processFreq(PageInput pageInput)
+        {
+            Frequency frequency = new Frequency();
+            frequency.PageId = pageInput.PageId;
+
+            switch (pageInput.Frequency)
+            {
+                case "day":
+                    if (pageInput.DayRandOrSpecific == "Rand")
+                    {
+                        frequency.IsRandom = true;
+                        // get random time at a day every day? 
+                    }
+                    else
+                    {
+                        string[] time = pageInput.TimeDaySpecific.Split(':');
+                        string hour = time[0];
+                        string minut = time[1];
+
+                        string cron = await Scheduler.FrequencyToCron("0", minut, hour, "*", "?", "*", true);
+
+                        frequency.Cron = cron;
+                        frequency.IsRandom = false;
+                        frequency.PostFrequency = String.Format("every day at {0}:{1}", hour, minut);
+                    }
+                    break;
+                case "week":
+                    if (pageInput.WeekDayRandOrSpecific == "Rand")
+                    {
+                        frequency.IsRandom = true;
+                        // get random time once a week? 
+
+                    }
+                    else
+                    {
+                        string cron = await Scheduler.FrequencyToCron("0", "0", "12", "?", pageInput.DayInWeek, "*", true);
+
+                        frequency.Cron = cron;
+                        frequency.IsRandom = false;
+                        frequency.PostFrequency = String.Format("every week on {0}, at 12:00", await getDay(pageInput.DayInWeek));
+                    }
+                    break;
+                case "month":
+                    if (pageInput.MonthDayRandOrSpecific == "Rand")
+                    {
+                        frequency.IsRandom = true;
+                        // get random time once a month? 
+
+                    }
+                    else
+                    {
+                        string cron = await Scheduler.FrequencyToCron("0", "0", "12", pageInput.DayOfMonth, "?", "*", true);
+
+                        frequency.Cron = cron;
+                        frequency.IsRandom = false;
+                        frequency.PostFrequency = string.Format("on the {0} of every month at 12:00", pageInput.DayOfMonth);
+                    }
+                    break;
+                case "2Min":
+                    string cron2Min = await Scheduler.FrequencyToCron("0", "2", "*", "*", "?", "*", false); //"0 0/2 * * * ?"
+                    frequency.Cron = cron2Min;
+                    frequency.IsRandom = false;
+                    frequency.PostFrequency = "every 2 minutes";
+
+                    break;
+                case "5Min":
+                    string cron5Min = await Scheduler.FrequencyToCron("0", "5", "*", "*", "?", "*", false); //"0 0/5 * * * ?"
+
+                    frequency.Cron = cron5Min;
+                    frequency.IsRandom = false;
+                    frequency.PostFrequency = "every 5 minutes";
+
+                    break;
+                case "30Min":
+                    string cron30Min = await Scheduler.FrequencyToCron("0", "30", "*", "*", "?", "*", false); //"0 0/30 * * * ?"
+
+                    frequency.Cron = cron30Min;
+                    frequency.IsRandom = false;
+                    frequency.PostFrequency = "every 30 minutes";
+
+                    break;
+
+                case "1Hour": //    not good, problem func 'getHourCron' in Scheduler
+                    string cron1Hour = await Scheduler.FrequencyToCron("0", "0", "1", "*", "?", "*", false); // "0 0 0/1 * * ?"
+
+                    frequency.Cron = cron1Hour;
+                    frequency.IsRandom = false;
+                    frequency.PostFrequency = "every 1 hour";
+                    break;
+
+                case "5Hour": //    not good, problem func 'getHourCron' in Scheduler
+                    string cron5Hour = await Scheduler.FrequencyToCron("0", "0", "5", "*", "?", "*", false); //"0 0 0/5 * * ?"
+
+                    frequency.Cron = cron5Hour;
+                    frequency.IsRandom = false;
+                    frequency.PostFrequency = "every 5 hours";
+                    break;
+
+                default:
+                    //Statement
+                    break;
+            }
+
+            return frequency;
+        }
+
         // *** TEST shani *** // 
         [HttpPost]
         [ValidateAntiForgeryToken] // check if have token - only if logged in - security
@@ -76,7 +204,7 @@ namespace FacebookAutoPost.Controllers
                 StamClass stamClass = new StamClass();
                 int numParams = await stamClass.countParamsUri(pageInput.Uri);
 
-               
+                Frequency frequency = await processFreq(pageInput);
 
                 if (numParams >= 0)
                 {

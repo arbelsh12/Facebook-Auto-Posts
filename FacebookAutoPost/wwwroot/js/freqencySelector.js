@@ -36,6 +36,7 @@ function setTime() {
         //timeLabel.text = "Please enter the requested time";
 
         const timeInput = document.createElement("input");
+        timeInput.type = "time";
         timeInput.for = "timeDay";
         timeInput.className = "form-control";
         timeInput.name = "TimeDaySpecific";
@@ -84,13 +85,13 @@ function setDayOfWeek() {
         selectDay.name = "DayInWeek";
 
         const optionSelect = myCreateElement('option', "", "--Please choose an option--");
-        const optionSunday = myCreateElement('option', "Sunday", "Sunday");
-        const optionMonday = myCreateElement('option', "Monday", "Monday");
-        const optionTuesday = myCreateElement('option', "Tuesday", "Tuesday");
-        const optionWednesday = myCreateElement('option', "Wednesday", "Wednesday");
-        const optionThursday = myCreateElement('option', "Thursday", "Thursday");
-        const optionFriday = myCreateElement('option', "Friday", "Friday");
-        const optionSaturday = myCreateElement('option', "Saturday", "Saturday");
+        const optionSunday = myCreateElement('option', "SUN", "Sunday");
+        const optionMonday = myCreateElement('option', "MON", "Monday");
+        const optionTuesday = myCreateElement('option', "TUE", "Tuesday");
+        const optionWednesday = myCreateElement('option', "WED", "Wednesday");
+        const optionThursday = myCreateElement('option', "THU", "Thursday");
+        const optionFriday = myCreateElement('option', "FRI", "Friday");
+        const optionSaturday = myCreateElement('option', "SAT", "Saturday");
 
         selectDay.appendChild(optionSelect);
         selectDay.appendChild(optionSunday);
