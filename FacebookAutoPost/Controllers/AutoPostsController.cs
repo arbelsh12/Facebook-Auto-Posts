@@ -193,7 +193,6 @@ namespace FacebookAutoPost.Controllers
             return frequency;
         }
 
-        // *** TEST shani *** // 
         [HttpPost]
         [ValidateAntiForgeryToken] // check if have token - only if logged in - security
 
@@ -205,11 +204,21 @@ namespace FacebookAutoPost.Controllers
                 int numParams = await stamClass.countParamsUri(pageInput.Uri);
 
                 Frequency frequency = await processFreq(pageInput);
+                _context.Add(frequency);
 
                 if (numParams >= 0)
                 {
                     // take relevant information from PageInput and create AutoPost
                     AutoPost autoPost = new AutoPost();
+                    autoPost.PageId = pageInput.PageId;
+                    autoPost.ApiKey =   pageInput.ApiKey;
+                    autoPost.Uri = pageInput.Uri;
+                    autoPost.Time = pageInput.Time;
+                    autoPost.PostTemplate =      pageInput.PostTemplate;
+                    autoPost.UserAPI   =    pageInput.UserAPI;
+                    autoPost.Token = pageInput.Token;
+                    autoPost.Frequency = "testtt";
+
 
                     _context.Add(autoPost);
                     await _context.SaveChangesAsync();
