@@ -353,7 +353,11 @@ namespace FacebookAutoPost.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var autoPost = await _context.AutoPosts.FindAsync(id);
+            var paramsUri = await _context.ParamsUri.FindAsync(id);
+            var freq = await _context.Frequency.FindAsync(id);
             _context.AutoPosts.Remove(autoPost);
+            _context.ParamsUri.Remove(paramsUri);
+            _context.Frequency.Remove(freq);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
