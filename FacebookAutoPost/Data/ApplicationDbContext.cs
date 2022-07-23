@@ -10,6 +10,8 @@ namespace FacebookAutoPost.Data
 
         public DbSet<ParamsUri> ParamsUri { get; set; }
 
+        public DbSet<Frequency> Frequency { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=AutoPosts.db");

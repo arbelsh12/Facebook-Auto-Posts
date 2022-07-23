@@ -36,8 +36,10 @@ function setTime() {
         //timeLabel.text = "Please enter the requested time";
 
         const timeInput = document.createElement("input");
+        timeInput.type = "time";
         timeInput.for = "timeDay";
         timeInput.className = "form-control";
+        timeInput.name = "TimeDaySpecific";
 
         containerTime.appendChild(timeLabel);
         containerTime.appendChild(timeInput);
@@ -80,41 +82,18 @@ function setDayOfWeek() {
 
         // Create a <select> element, set its type and name attributes
         const selectDay = document.createElement("select");
+        selectDay.name = "DayInWeek";
 
-        const optionSelect = document.createElement('option');
-        optionSelect.text = "--Please choose an option--";
-        optionSelect.value = "";
-
-        const optionSunday = document.createElement('option');
-        optionSunday.value = "Sunday";
-        optionSunday.text = "Sunday";
-
-        const optionMonday = document.createElement('option');
-        optionMonday.value = "Monday";
-        optionMonday.text = "Monday";
-
-        const optionTuesday = document.createElement('option');
-        optionTuesday.value = "Tuesday";
-        optionTuesday.text = "Tuesday";
-
-        const optionWednesday = document.createElement('option');
-        optionWednesday.value = "Wednesday";
-        optionWednesday.text = "Wednesday";
-
-        const optionThursday = document.createElement('option');
-        optionThursday.value = "Thursday";
-        optionThursday.text = "Thursday";
-
-        const optionFriday = document.createElement('option');
-        optionFriday.value = "Friday";
-        optionFriday.text = "Friday";
-
-        const optionSaturday = document.createElement('option');
-        optionSaturday.value = "Saturday";
-        optionSaturday.text = "Saturday";
+        const optionSelect = myCreateElement('option', "", "--Please choose an option--");
+        const optionSunday = myCreateElement('option', "SUN", "Sunday");
+        const optionMonday = myCreateElement('option', "MON", "Monday");
+        const optionTuesday = myCreateElement('option', "TUE", "Tuesday");
+        const optionWednesday = myCreateElement('option', "WED", "Wednesday");
+        const optionThursday = myCreateElement('option', "THU", "Thursday");
+        const optionFriday = myCreateElement('option', "FRI", "Friday");
+        const optionSaturday = myCreateElement('option', "SAT", "Saturday");
 
         selectDay.appendChild(optionSelect);
-
         selectDay.appendChild(optionSunday);
         selectDay.appendChild(optionMonday);
         selectDay.appendChild(optionTuesday);
@@ -134,6 +113,15 @@ function setDayOfWeek() {
         }
     }
 }
+
+function myCreateElement(elemType, value, text) {
+    const elem = document.createElement(elemType);
+    elem.value = value;
+    elem.text = text;
+
+    return elem;
+}
+
 
 function setDayOfMonth() {
     const selectDayMonth = document.querySelector('.selectDayMonth');
@@ -168,6 +156,7 @@ function setDayOfMonth() {
         const dayMonthInput = document.createElement("input");
         dayMonthInput.for = "timeDay";
         dayMonthInput.className = "form-control";
+        dayMonthInput.name = "DayOfMonth";
 
         containerTime.appendChild(dayMonthLabel);
         containerTime.appendChild(dayMonthInput);
@@ -230,6 +219,7 @@ function dayFrequencySelected() {
     // Create a <select> element, set its type and name attributes
     const selectTimeDay = document.createElement("select");
     selectTimeDay.className = "selectTimeDay";
+    selectTimeDay.name = "DayRandOrSpecific";
 
     const optionSelect = document.createElement('option');
     optionSelect.text = "--Please choose an option--";
@@ -260,6 +250,7 @@ function weekFrequencySelected() {
     // Create a <select> element, set its type and name attributes
     const selectDay = document.createElement("select");
     selectDay.className = "selectDayWeek"
+    selectDay.name = "WeekDayRandOrSpecific";
 
     const optionSelect = document.createElement('option');
     optionSelect.text = "--Please choose an option--";
@@ -290,6 +281,7 @@ function monthFrequencySelected() {
     // Create a <select> element, set its type and name attributes
     const selectDayMonth = document.createElement("select");
     selectDayMonth.className = "selectDayMonth";
+    selectDayMonth.name = "MonthDayRandOrSpecific"
 
     const optionSelect = document.createElement('option');
     optionSelect.text = "--Please choose an option--";

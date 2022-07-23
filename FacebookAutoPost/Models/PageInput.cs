@@ -2,11 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 
-
 namespace FacebookAutoPost.Models
 {
-    //assumption: one Auto post pare FB page
-    public class AutoPost
+    public class PageInput
     {
         [Key] // indicates that the first property is the primary key in the DB
         [DisplayName("Page ID")]
@@ -30,23 +28,16 @@ namespace FacebookAutoPost.Models
 
         public string Uri { get; set; }
 
-        public string PageUrl
-        {
-            get { return "https://graph.facebook.com/" + PageId +"/feed"; }
-        }
+        public string DayRandOrSpecific { get; set; }
 
-        //public string DayRandOrSpecific { get; set; }
+        public string MonthDayRandOrSpecific { get; set; }
 
-        //public string MonthDayRandOrSpecific { get; set; }
+        public string WeekDayRandOrSpecific { get; set; }
 
-        public string WeekDayRandOrSpecific { get; }
+        public string DayOfMonth { get; set; }
 
-        //public string DayOfMonth { get; set; }
-                
-        public string DayInWeek { get; }
+        public string DayInWeek { get; set; }
 
-        //public string TimeDaySpecific { get; }
-
+        public string TimeDaySpecific { get; set; }
     }
 }
-
