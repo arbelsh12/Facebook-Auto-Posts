@@ -18,5 +18,17 @@ namespace FacebookAutoPost.Models
 
         [DisplayName("Param Three")]
         public string ParamThree { get; set; }
+
+        public string[] ParamArray
+        {
+            get
+            {
+                string[] arr = new string[3];
+                arr[0] = ParamOne;
+                arr[1] = ParamTwo;
+                arr[2] = ParamThree;
+                return arr;
+            }
+        }
     }
 }
