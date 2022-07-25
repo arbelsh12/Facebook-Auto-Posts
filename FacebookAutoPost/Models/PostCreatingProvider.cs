@@ -28,40 +28,34 @@ namespace FacebookAutoPost.Models
         //    _context = null;
         //}
 
-        public async Task<string> CreatePost(string primeryKey, bool planeJsonPath = false)
+        public async Task<string> CreatePost(string primeryKey)
         {
             var autoPost = _context.AutoPosts.Find(primeryKey);
 
             JObject json = await getJsonFromApi(autoPost.UserAPI, autoPost.ApiKey, autoPost.Uri);
 
-            string post = getPost(autoPost.PostTemplate, json, planeJsonPath);
+            string post = getPost(autoPost.PostTemplate, json);
             post = post = $@"{post}"; //making string interpolated
 
             return post;
         }
 
-        // planePath parameter sets if the token needs to starts with "$." string or not.
-        // for JokesAPI needs to starts without $.
-        private string getValJson(string jPath, JObject json, bool planePath = false)
+        private string getValJson(string jPath, JObject json)
         {
-            jPath = planePath ? jPath.Substring(2) : jPath;
-
             var val = json.SelectToken(jPath);
 
-            return val.ToString();
+            return val?.ToString();
         }
 
-        // planePath parameter sets if the token needs to starts with "$." string or not.
-        // for JokesAPI needs to starts without $.
-        private string getPost(string template, JObject json, bool planePath = false)
+        private string getPost(string template, JObject json)
         {
-            string[] subs = template.Split(' ');
             StringBuilder post = new StringBuilder();
+            string[] subs = template.Split(' ');
             string value;
 
             foreach (string sub in subs)
             {
-                value = sub[0] == '$' ? getValJson(sub, json, planePath) : sub;
+                value = sub[0] == '$' ? getValJson(sub, json) : sub;
                 post.Append(value + ' ');
             }
 
@@ -89,6 +83,17 @@ namespace FacebookAutoPost.Models
 
                 return json;
             }
+
+        }
+
+        //methods for general API
+        public async Task<string> CreatePost(AutoPost autoPost, string uri)
+        {
+            JObject json = await getJsonFromApi(autoPost.UserAPI, autoPost.ApiKey, uri);
+
+            string post = getPost(autoPost.PostTemplate, json).Replace(" \\n", Environment.NewLine);
+
+            return post;
         }
     }
 }
