@@ -70,7 +70,9 @@ namespace FacebookAutoPost.Models
         public async Task<int> PostToPage(string pageID, string test)
         {
             AutoPost user = _context.AutoPosts.Find(pageID);
-            string[] paramArray = { "2022-10-01", "-553173", "number random", "2022-09-30" };
+            string[] paramArray = _context.ParamsUri.Find(pageID).ParamArray;
+
+            //string[] paramArray = { "2022-10-01", "-553173", "number random", "2022-09-30" };
 
             GetParamsVals(paramArray);
             string CompletedUriByParams = await GetCompletedUri(user, paramArray);
