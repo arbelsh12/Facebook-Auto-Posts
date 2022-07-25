@@ -1,22 +1,22 @@
 ﻿using FacebookAutoPost.Data;
 using FacebookAutoPost.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace FacebookAutoPost.Controllers
 {
     public class PostingController : Controller
     {
-        private readonly JokesAPI _jokesAPI;
-        private readonly BookingApi _bookingApi;
         private readonly NewsApi _newsAPI;
+        private readonly generalApi _generalApi;
         private readonly ApplicationDbContext _context;
+        
 
         public PostingController(ApplicationDbContext context)
         {
             _context = context;
-            _jokesAPI = new JokesAPI(_context);
-            _bookingApi = new BookingApi(_context);
             _newsAPI = new NewsApi(_context);
+            _generalApi = new generalApi(_context);
         }
 
         public IActionResult Post()
@@ -27,15 +27,15 @@ namespace FacebookAutoPost.Controllers
         public IActionResult Joke()
         {
             string pageID = "107638691815379";
-            _jokesAPI.PostToPage(pageID);
+            _generalApi.PostToPage(pageID, "test");
 
             return View();
         }
 
-        public IActionResult Booking()
+        public async Task<IActionResult> Booking()
         {
             string pageID = "109056161633630";
-            _bookingApi.postToPage(pageID);
+            await _generalApi.PostToPage(pageID, "test");
 
             return View();
         }
