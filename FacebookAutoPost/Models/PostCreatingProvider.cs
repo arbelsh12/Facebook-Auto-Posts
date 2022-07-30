@@ -23,23 +23,6 @@ namespace FacebookAutoPost.Models
             _context = null;
         }
 
-        //public async Task<string> CreatePost(string primeryKey)
-        //{
-        //    _context = null;
-        //}
-
-        public async Task<string> CreatePost(string primeryKey)
-        {
-            var autoPost = _context.AutoPosts.Find(primeryKey);
-
-            JObject json = await getJsonFromApi(autoPost.UserAPI, autoPost.ApiKey, autoPost.Uri);
-
-            string post = getPost(autoPost.PostTemplate, json);
-            post = post = $@"{post}"; //making string interpolated
-
-            return post;
-        }
-
         private string getValJson(string jPath, JObject json)
         {
             var val = json.SelectToken(jPath);
@@ -70,10 +53,10 @@ namespace FacebookAutoPost.Models
                 Method = HttpMethod.Get,
                 RequestUri = new Uri(uri),
                 Headers =
-    {
-        { "X-RapidAPI-Host", api },
-        { "X-RapidAPI-Key", apiKey },
-    },
+                {
+                    { "X-RapidAPI-Host", api },
+                    { "X-RapidAPI-Key", apiKey },
+                },
             };
             using (var response = await client.SendAsync(request))
             {
@@ -83,7 +66,6 @@ namespace FacebookAutoPost.Models
 
                 return json;
             }
-
         }
 
         //methods for general API

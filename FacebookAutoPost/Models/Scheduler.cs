@@ -19,12 +19,14 @@ namespace FacebookAutoPost.Models
             factory = new StdSchedulerFactory();
         }
 
-
+        
+        // The jobName is the pageID
         public async Task<int> scheduleCronJob<T>(string cron, string jobName, string jobGroup, string triggerName) where T : IJob
         {
-            // define the job and tie it to our HelloJob class
+            // define the job and tie it to our T class
             IJobDetail job = JobBuilder.Create<T>()
                   .WithIdentity(jobName, jobGroup)
+                  .UsingJobData("pageId", jobName)
                   .Build();
 
             // Trigger the job to run now, and then every 40 seconds
@@ -45,6 +47,8 @@ namespace FacebookAutoPost.Models
             return worked;
         }
 
+
+        //TODO: create a FE of editing
         public async Task<int> editExitingCronTrigger(string newCron, string group, string oldTriggerName, string newTriggerName)
         {
             TriggerKey key = new TriggerKey(oldTriggerName, group);
@@ -66,6 +70,7 @@ namespace FacebookAutoPost.Models
 
         }
 
+
         public async Task<int> deleteScheduledJob(string jobName, string group)
         {
             JobKey key = new JobKey(jobName, group);
@@ -79,6 +84,7 @@ namespace FacebookAutoPost.Models
 
             return worked;
         }
+
 
         public static async Task<string> FrequencyToCron(string sec, string min, string hour, string dayMonth, string dayWeek, string month, bool onceA)
         {
@@ -104,43 +110,6 @@ namespace FacebookAutoPost.Models
 
         }
 
-        //public IJobDetail getJob<T>(string forJob, string jobGroup) where T : IJob
-        //{
-        //    IJobDetail job = JobBuilder.Create<T>()
-        //        .WithIdentity(forJob, jobGroup)
-        //        .Build();
-
-        //    return job;
-        //}
-
-        protected async Task<int> sch()
-        {
-            // construct a scheduler factory using defaults
-            StdSchedulerFactory factory = new StdSchedulerFactory();
-
-            // get a scheduler
-            IScheduler scheduler = await factory.GetScheduler();
-            await scheduler.Start();
-
-            // define the job and tie it to our HelloJob class
-            IJobDetail job = JobBuilder.Create<PostBookingJob>()
-                .WithIdentity("myJob", "group1")
-                .Build();
-
-            // Trigger the job to run now, and then every 40 seconds
-            ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity("myTrigger", "group1")
-                .StartNow()
-                .WithSimpleSchedule(x => x
-                    .WithIntervalInSeconds(120)
-                    .WithRepeatCount(2))
-            .Build();
-
-            await scheduler.ScheduleJob(job, trigger);
-
-            return 1;
-        }
-
 
         private static async Task<string> getSecCron(string sec, bool onceA)
         {
@@ -157,6 +126,7 @@ namespace FacebookAutoPost.Models
 
             return secCron;
         }
+
 
         private static async Task<string> getMinCron(string min, bool onceA)
         {
@@ -175,6 +145,7 @@ namespace FacebookAutoPost.Models
             return minCron;
         }
 
+
         private static async Task<string> getHourCron(string hour, bool onceA)
         {
             string hourCron;
@@ -190,6 +161,7 @@ namespace FacebookAutoPost.Models
 
             return hourCron;
         }
+
 
         private static async Task<string> getDayMonthCron(string dayMonth, bool onceA)
         {
@@ -207,10 +179,12 @@ namespace FacebookAutoPost.Models
             return dayMonthCron;
         }
 
+
         private static async Task<string> getDayWeekCron(string dayWeek)
         {
             return dayWeek; // can be a day  SUN-SAT or - '?' that means it doesnt matter at which day in week SUN-SAT
         }
+
 
         private static async Task<string> getMonthCron(string month)
         {

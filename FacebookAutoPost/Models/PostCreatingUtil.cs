@@ -14,7 +14,7 @@ namespace FacebookAutoPost.Models
         {
             cities = new List<string> { "Tel Aviv", "Jerusalem", "Athens", "Rome", "Milan", "Vienna", "Munich", "Berlin", "Zurich", "Amsterdam", "London", "Paris", "Madrid", "Barcelona", "Prague", "Budapest", "Lisbon", "New York", "Miami", "San Francisco", "Rio De Janeiro", "Lima", "Buenos Aires", "Dubai", "Sydney", "Bangkok", "Hong Kong", "Tokyo" };
             rnd = new Random();
-            dateFormat = "MM/dd/yyyy";
+            dateFormat = "YYYY-MM-DD";
         }
 
         public string GetRandomNumber(int maxVal = 10)

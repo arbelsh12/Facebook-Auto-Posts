@@ -6,13 +6,16 @@ namespace FacebookAutoPost.Models
 {
     public class GeneralJob : IJob
     {
-        public async Task Execute(IJobExecutionContext context)
+        //the execution starts every time the tigger is triggered
+        public async Task Execute(IJobExecutionContext exeContext)
         {
-            JobDataMap dataMap = context.JobDetail.JobDataMap;
+            ApplicationDbContext dataBaseContext = new ApplicationDbContext();
+            GeneralApi generalApi = new GeneralApi(dataBaseContext);
 
+            JobDataMap dataMap = exeContext.JobDetail.JobDataMap;
+                        
             string pageId = dataMap.GetString("pageId");
-
-            // arbel general class
+            await generalApi.PostToPage(pageId, "test");
         }
     }
 }
