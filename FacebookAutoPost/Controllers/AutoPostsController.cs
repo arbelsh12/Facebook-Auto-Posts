@@ -56,6 +56,7 @@ namespace FacebookAutoPost.Controllers
             return View();
         }
 
+        //the original create
         // POST: AutoPosts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -94,6 +95,9 @@ namespace FacebookAutoPost.Controllers
 
             return "ERROR";
         }
+
+        //creates the freq of the autoPost
+        //assumption: the random time for different days is not valid yet
         private async Task<Frequency> processFreq(PageInput pageInput)
         {
             Frequency frequency = new Frequency();
@@ -125,7 +129,6 @@ namespace FacebookAutoPost.Controllers
                     {
                         frequency.IsRandom = true;
                         // get random time once a week? 
-
                     }
                     else
                     {
@@ -176,7 +179,7 @@ namespace FacebookAutoPost.Controllers
 
                     break;
 
-                case "1Hour": //    not good, problem func 'getHourCron' in Scheduler
+                case "1Hour": 
                     string cron1Hour = await Scheduler.FrequencyToCron("0", "0", "1", "*", "?", "*", false); // "0 0 0/1 * * ?"
 
                     frequency.Cron = cron1Hour;
@@ -184,7 +187,7 @@ namespace FacebookAutoPost.Controllers
                     frequency.PostFrequency = "every 1 hour";
                     break;
 
-                case "5Hour": //    not good, problem func 'getHourCron' in Scheduler
+                case "5Hour":
                     string cron5Hour = await Scheduler.FrequencyToCron("0", "0", "5", "*", "?", "*", false); //"0 0 0/5 * * ?"
 
                     frequency.Cron = cron5Hour;
@@ -207,7 +210,7 @@ namespace FacebookAutoPost.Controllers
         {
             if (ModelState.IsValid)
             {
-                StamClass stamClass = new StamClass();
+                StamClass stamClass = new StamClass(); //the class check valid placer holders in uri
                 int numParams = await stamClass.countParamsUri(pageInput.Uri);
 
                 Frequency frequency = await processFreq(pageInput);
@@ -221,13 +224,13 @@ namespace FacebookAutoPost.Controllers
                     _context.Add(autoPost);
                     await _context.SaveChangesAsync();
 
+                    //ARBEL: put in comment when we want to debug
                     // schedule job
                     var scheduled = await scheduler.scheduleCronJob<PostBookingJob>(frequency.Cron, autoPost.PageId, schedulerGroup, autoPost.PageId);
-                    //var scheduled = await scheduler.scheduleCronJob<GeneralJob>(frequency.Cron, autoPost.PageId, schedulerGroup, autoPost.PageId);
                     
                     if(scheduled == fail)
                     {
-                        // failed to schedule job
+                        //TODO: failed to schedule job
                     }
 
                     if (numParams == 0)
@@ -238,30 +241,37 @@ namespace FacebookAutoPost.Controllers
                     {
                         List<string> paramsUri = await stamClass.getItemsBetweenBrackets(autoPost.Uri);
 
+                        //TODO: maybe can changed to calling the GetParamsUri action
                         return RedirectToAction("GetParamsUri", new { _paramsUri = paramsUri, pageId = autoPost.PageId });
                     }
                 }
                 else
                 {
-                    // ERROR in URI
+                    // TODO: ERROR in URI
                 }
 
                  // insted of return to a View, retrun to an action that returns a View -> to make sure the new View is updated with the new data
             }
 
-            //return View(autoPost);
             return View();
         }
 
 
         public IActionResult GetParamsUri(List<string> _paramsUri, string pageId)
         {
-            GetParamsUri paramsUri = new GetParamsUri(pageId);
-            paramsUri.NumParams = _paramsUri.Count;
-            paramsUri.ParamsUri = _paramsUri;
+            ParamsUri paramsUri = new ParamsUri();  
+            paramsUri.PageId = pageId;
+
+            paramsUri.ParamTwo = _paramsUri.Count > 1 ? "2" : null;
+            paramsUri.ParamThree = _paramsUri.Count > 3 ? "3" : null;
+
+            //GetParamsUri paramsUri = new GetParamsUri(pageId);
+            //paramsUri.NumParams = _paramsUri.Count;
+            //paramsUri.ParamsUri = _paramsUri;
             return View(paramsUri); 
         }
 
+        //is called when the form is submited
         [HttpPost]
         [ValidateAntiForgeryToken] // check if have token - only if logged in - security
         public async Task<IActionResult> GetParamsUri([Bind("PageId,ParamOne,ParamTwo,ParamThree")] ParamsUri paramsUri)
@@ -272,18 +282,11 @@ namespace FacebookAutoPost.Controllers
                 _context.Add(paramsUri);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index)); // insted of return to a View, retrun to an action that returns a View -> to make sure the new View is updated with the new data
-                //return RedirectToAction("SaveParamsSourceUri");
             }
 
             return View(paramsUri);
         }
 
-        // dont need?
-        public IActionResult SaveParamsSourceUri()
-        {
-
-            return View();
-        }
 
         // GET: AutoPosts/Edit/5
         public async Task<IActionResult> Edit(string id)

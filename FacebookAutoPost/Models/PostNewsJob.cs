@@ -4,6 +4,7 @@ using FacebookAutoPost.Data;
 
 namespace FacebookAutoPost.Models
 {
+    //can be deleted
     public class PostNewsJob : IJob
     {
         public async Task Execute(IJobExecutionContext context)

@@ -8,7 +8,7 @@ namespace FacebookAutoPost.Controllers
     public class PostingController : Controller
     {
         private readonly NewsApi _newsAPI;
-        private readonly generalApi _generalApi;
+        private readonly GeneralApi _generalApi;
         private readonly ApplicationDbContext _context;
         
 
@@ -16,7 +16,7 @@ namespace FacebookAutoPost.Controllers
         {
             _context = context;
             _newsAPI = new NewsApi(_context);
-            _generalApi = new generalApi(_context);
+            _generalApi = new GeneralApi(_context);
         }
 
         public IActionResult Post()
@@ -24,10 +24,10 @@ namespace FacebookAutoPost.Controllers
             return View();
         }
 
-        public IActionResult Joke()
+        public async Task<IActionResult> Joke()
         {
             string pageID = "107638691815379";
-            _generalApi.PostToPage(pageID, "test");
+            await _generalApi.PostToPage(pageID, "test");
 
             return View();
         }

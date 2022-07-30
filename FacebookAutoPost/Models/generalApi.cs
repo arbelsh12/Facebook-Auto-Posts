@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace FacebookAutoPost.Models
 {
-    public class generalApi
+    public class GeneralApi
     {
         private readonly ApplicationDbContext _context;
         private readonly PostingProvider _postingProvider;
         private readonly PostCreatingUtil _postCreatingUtil;
         private readonly PostCreatingProvider _postCreatingProvider;
 
-        public generalApi(ApplicationDbContext context)
+        public GeneralApi(ApplicationDbContext context)
         {
             _context = context;
             _postCreatingProvider = new PostCreatingProvider(_context);
@@ -71,8 +71,6 @@ namespace FacebookAutoPost.Models
         {
             AutoPost user = _context.AutoPosts.Find(pageID);
             string[] paramArray = _context.ParamsUri.Find(pageID).ParamArray;
-
-            //string[] paramArray = { "2022-10-01", "-553173", "number random", "2022-09-30" };
 
             GetParamsVals(paramArray);
             string CompletedUriByParams = await GetCompletedUri(user, paramArray);

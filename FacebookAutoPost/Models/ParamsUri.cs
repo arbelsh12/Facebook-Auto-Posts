@@ -4,6 +4,7 @@ using System.ComponentModel;
 
 namespace FacebookAutoPost.Models
 {
+    // The class of the DB table, not FE
     public class ParamsUri
     {
         [Key] // indicates that the first property is the primary key in the DB
