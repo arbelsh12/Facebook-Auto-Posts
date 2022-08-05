@@ -1,6 +1,7 @@
 ﻿using FacebookAutoPost.Data;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,30 +22,36 @@ namespace FacebookAutoPost.Models
             _postCreatingUtil = new PostCreatingUtil();
         }
 
-        private void GetParamsVals(string[] paramArray)
+        private List<string> GetParamsVals(string pageId)
         {
+            List<ParamsUri.Params> paramList = _context.ParamsUri.Find(pageId).ParamArray;
+            List<string> paramArray = new List<string>();
 
-            for (int i=0; i<paramArray.Length; i++)
+            for (int i = 0; i < paramList.Count; i++)
             {
-                switch (paramArray[i])
+                if(paramList[i].random == true && paramList[i].paramType == "City")
                 {
-                    case "city random":
-                        paramArray[i] = _postCreatingUtil.GetRandomCity();
-                        break;
-                    case "number random":
-                        paramArray[i] = _postCreatingUtil.GetRandomNumber();
-                        break;
-                    case "date random":
-                        paramArray[i] = _postCreatingUtil.GetRandomFutureDate(null, null);
-                        break;
-                    default:
-                        if(!_postCreatingUtil.isValidDate(paramArray[i]))
-                        {
-                            Console.WriteLine("No match found for the param {0} in array.", i);
-                        }
-                        break;
+                    paramArray.Add(_postCreatingUtil.GetRandomCity());
                 }
-            }            
+                else if(paramList[i].random == true && paramList[i].paramType == "Number")
+                {
+                    paramArray.Add(_postCreatingUtil.GetRandomNumber());
+                }
+                else if(paramList[i].random == true && paramList[i].paramType == "Date")
+                {
+                    paramArray.Add(_postCreatingUtil.GetRandomFutureDate(null, null));
+                }
+                else if(!string.IsNullOrEmpty(paramList[i].value) && paramList[i].random == false)
+                {
+                    paramArray.Add(paramList[i].value);
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException("The param is not valid.");
+                }
+            }
+
+            return paramArray;
         }
 
         //creating the uri according to the template the user provides us and the parameters in the new table
@@ -52,11 +59,11 @@ namespace FacebookAutoPost.Models
         //assumptions: the place holders needs to be in a ascending order starting from 0.
         //             the params array objects needs to be in the place holders' order.
         //             every place holder appears once.
-        public async Task<string> GetCompletedUri(AutoPost user, string[] param)
+        public async Task<string> GetCompletedUri(AutoPost user, List<string> param)
         {
             string completedUri = user.Uri;
 
-            for (int i = 0; i < param.Length; i++)
+            for (int i = 0; i < param.Count; i++)
             {
                 string PH = "{" + i.ToString() + "}";
 
@@ -70,9 +77,7 @@ namespace FacebookAutoPost.Models
         public async Task<int> PostToPage(string pageID, string test)
         {
             AutoPost user = _context.AutoPosts.Find(pageID);
-            string[] paramArray = _context.ParamsUri.Find(pageID).ParamArray;
-
-            GetParamsVals(paramArray);
+            List<string> paramArray = GetParamsVals(pageID);
             string CompletedUriByParams = await GetCompletedUri(user, paramArray);
             string postCotent = await _postCreatingProvider.CreatePost(user, CompletedUriByParams);
             var res = _postingProvider.postToPage(user.Token, user.PageUrl, postCotent).Result;

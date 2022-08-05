@@ -1,34 +1,83 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace FacebookAutoPost.Models
 {
-    // The class of the DB table, not FE
+    // The class of the DB table, FE of the form, not FE of table
     public class ParamsUri
     {
         [Key] // indicates that the first property is the primary key in the DB
         [DisplayName("Page ID")]
         public string PageId { get; set; }
 
+        [DisplayName("Param Type")]
+        public string ParamType1 { get; set; }
+
         [DisplayName("Param One")]
         public string ParamOne { get; set; }
+
+        [DisplayName("Random Value")]
+        public bool RandomValue1 { get; set; }
+
+        [DisplayName("Param Type")]
+        public string ParamType2 { get; set; }
 
         [DisplayName("Param Two")]
         public string ParamTwo { get; set; }
 
+        [DisplayName("Random Value")]
+        public bool RandomValue2 { get; set; }
+
+        [DisplayName("Param Type")]
+        public string ParamType3 { get; set; }
+
         [DisplayName("Param Three")]
         public string ParamThree { get; set; }
 
-        public string[] ParamArray
+        [DisplayName("Random Value")]
+        public bool RandomValue3 { get; set; }
+
+        public struct Params
+        {
+            public Params(string _paramType, string _value, bool _random)
+            {
+                paramType = _paramType;
+                value = _value;
+                random = _random;
+            }
+
+            public string paramType { get; }
+            public string value { get; }
+            public bool random { get; }
+        }
+
+        public List<Params> ParamArray
         {
             get
             {
-                string[] arr = new string[3];
-                arr[0] = ParamOne;
-                arr[1] = ParamTwo;
-                arr[2] = ParamThree;
-                return arr;
+                List<Params> list = new List<Params>();
+
+                if (RandomValue1 == true || !string.IsNullOrEmpty(ParamOne))
+                {
+                    Params p = new Params(ParamType1, ParamOne, RandomValue1);
+                    list.Add(p);
+                }
+
+                if (RandomValue2 == true || !string.IsNullOrEmpty(ParamTwo))
+                {
+                    Params p = new Params(ParamType2, ParamTwo, RandomValue2);
+                    list.Add(p);
+                }
+
+                if (RandomValue3 == true || !string.IsNullOrEmpty(ParamThree))
+                {
+                    Params p = new Params(ParamType3, ParamThree, RandomValue3);
+                    list.Add(p);
+                }
+
+                return list;
             }
         }
     }

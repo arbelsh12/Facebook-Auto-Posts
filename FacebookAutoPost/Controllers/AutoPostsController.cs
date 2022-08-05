@@ -259,22 +259,22 @@ namespace FacebookAutoPost.Controllers
 
         public IActionResult GetParamsUri(List<string> _paramsUri, string pageId)
         {
-            ParamsUri paramsUri = new ParamsUri();  
-            paramsUri.PageId = pageId;
+            //ParamsUri paramsUri = new ParamsUri();  
+            //paramsUri.PageId = pageId;
 
-            paramsUri.ParamTwo = _paramsUri.Count > 1 ? "2" : null;
-            paramsUri.ParamThree = _paramsUri.Count > 3 ? "3" : null;
+            //paramsUri.ParamTwo = _paramsUri.Count > 1 ? "2" : null;
+            //paramsUri.ParamThree = _paramsUri.Count > 3 ? "3" : null;
 
-            //GetParamsUri paramsUri = new GetParamsUri(pageId);
-            //paramsUri.NumParams = _paramsUri.Count;
-            //paramsUri.ParamsUri = _paramsUri;
+            GetParamsUri paramsUri = new GetParamsUri(pageId);
+            paramsUri.NumParams = _paramsUri.Count;
+            paramsUri.ParamsUri = _paramsUri;
             return View(paramsUri); 
         }
 
         //is called when the form is submited
         [HttpPost]
         [ValidateAntiForgeryToken] // check if have token - only if logged in - security
-        public async Task<IActionResult> GetParamsUri([Bind("PageId,ParamOne,ParamTwo,ParamThree")] ParamsUri paramsUri)
+        public async Task<IActionResult> GetParamsUri([Bind("PageId,ParamType1,ParamOne,RandomValue1,ParamType2,ParamTwo,RandomValue2,ParamType3,ParamThree,RandomValue3")] ParamsUri paramsUri)
         {
             // add params to DB
             if (ModelState.IsValid)
@@ -282,6 +282,7 @@ namespace FacebookAutoPost.Controllers
                 _context.Add(paramsUri);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index)); // insted of return to a View, retrun to an action that returns a View -> to make sure the new View is updated with the new data
+                List<ParamsUri.Params> paramArray = _context.ParamsUri.Find(paramsUri.PageId).ParamArray;
             }
 
             return View(paramsUri);
@@ -372,7 +373,10 @@ namespace FacebookAutoPost.Controllers
                 _context.ParamsUri.Remove(paramsUri);
             }
 
-            _context.Frequency.Remove(freq);
+            if (freq != null)
+            {
+                _context.Frequency.Remove(freq);
+            }            
 
             await _context.SaveChangesAsync();
 
