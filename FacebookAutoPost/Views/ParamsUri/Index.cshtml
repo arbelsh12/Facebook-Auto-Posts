@@ -16,13 +16,31 @@
                 @Html.DisplayNameFor(model => model.PageId)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.ParamType1)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.ParamOne)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RandomValue1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParamType2)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ParamTwo)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.RandomValue2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParamType3)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.ParamThree)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RandomValue3)
             </th>
 @*            <th>Change</th>
 *@        </tr>
@@ -34,15 +52,33 @@
                 @Html.DisplayFor(modelItem => item.PageId)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.ParamType1)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.ParamOne)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RandomValue1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParamType2)
+            </td>                    
             <td>
                 @Html.DisplayFor(modelItem => item.ParamTwo)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.RandomValue2)
+            </td>               
+            <td>
+                @Html.DisplayFor(modelItem => item.ParamType3)
+            </td>               
+            <td>
                 @Html.DisplayFor(modelItem => item.ParamThree)
             </td>
-            @*<td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RandomValue3)
+            </td>                
+            @*<td
                 <a asp-action="Edit" asp-route-id="@item.PageId" class="btn btn-info">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.PageId" class="btn btn-info">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.PageId" class="btn btn-danger">Delete</a> <!--why asp-route-id="item.PageId" and not asp-route-id="AutoPost.PageId ??"-->

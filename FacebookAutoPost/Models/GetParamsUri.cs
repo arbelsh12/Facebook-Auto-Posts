@@ -23,13 +23,31 @@ namespace FacebookAutoPost.Models
             PageId = pageId;
         }
 
-        //[DisplayName("Param One")]
-        //public string ParamOne { get; set; }
+        [DisplayName("Param Type")]
+        public string ParamType1 { get; set; }
 
-        //[DisplayName("Param Two")]
-        //public string ParamTwo { get; set; }
+        [DisplayName("Param One")]
+        public string ParamOne { get; set; }
 
-        //[DisplayName("Param Three")]
-        //public string ParamThree { get; set; }
+        [DisplayName("Random Value")]
+        public bool RandomValue1 { get; set; }
+
+        [DisplayName("Param Type")]
+        public string ParamType2 { get; set; }
+
+        [DisplayName("Param Two")]
+        public string ParamTwo { get; set; }
+
+        [DisplayName("Random Value")]
+        public bool RandomValue2 { get; set; }
+
+        [DisplayName("Param Type")]
+        public string ParamType3 { get; set; }
+
+        [DisplayName("Param Three")]
+        public string ParamThree { get; set; }
+
+        [DisplayName("Random Value")]
+        public bool RandomValue3 { get; set; }
     }
 }
