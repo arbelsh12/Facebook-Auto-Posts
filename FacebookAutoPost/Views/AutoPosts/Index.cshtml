@@ -14,7 +14,7 @@
 <p class="text-right">
     <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
-<table class="w-100 table table-bordered table-hover">
+<table class="w-130 table table-bordered table-hover">
     <thead>
         <tr>
             <th>
@@ -31,9 +31,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Frequency)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Time)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ApiKey)
@@ -61,9 +58,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Frequency)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Time)
             </td>
             <td class="text-break">
                 @Html.DisplayFor(modelItem => item.ApiKey)
