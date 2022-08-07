@@ -206,7 +206,7 @@ namespace FacebookAutoPost.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken] // check if have token - only if logged in - security
 
-        public async Task<IActionResult> Create([Bind("PageId,Token,UserAPI,PostTemplate,Frequency,Time,ApiKey,Uri,DayRandOrSpecific,MonthDayRandOrSpecific,WeekDayRandOrSpecific,DayOfMonth,DayInWeek,TimeDaySpecific")] PageInput pageInput)
+        public async Task<IActionResult> Create([Bind("PageId,Token,UserAPI,PostTemplate,Frequency,ApiKey,Uri,DayRandOrSpecific,MonthDayRandOrSpecific,WeekDayRandOrSpecific,DayOfMonth,DayInWeek,TimeDaySpecific")] PageInput pageInput)
         {
             if (ModelState.IsValid)
             {
@@ -219,7 +219,7 @@ namespace FacebookAutoPost.Controllers
                 if (numParams >= 0)
                 {
                     // take relevant information from PageInput and create AutoPost
-                    AutoPost autoPost = new AutoPost(pageInput.PageId, pageInput.Token, pageInput.UserAPI, pageInput.PostTemplate, pageInput.Frequency, pageInput.Time, pageInput.ApiKey, pageInput.Uri);
+                    AutoPost autoPost = new AutoPost(pageInput.PageId, pageInput.Token, pageInput.UserAPI, pageInput.PostTemplate, pageInput.Frequency, pageInput.ApiKey, pageInput.Uri);
 
                     _context.Add(autoPost);
                     await _context.SaveChangesAsync();
@@ -310,7 +310,7 @@ namespace FacebookAutoPost.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("PageId,Token,UserAPI,PostTemplate,Frequency,Time,ApiKey,Uri")] AutoPost autoPost)
+        public async Task<IActionResult> Edit(string id, [Bind("PageId,Token,UserAPI,PostTemplate,Frequency,ApiKey,Uri")] AutoPost autoPost)
         {
             if (id != autoPost.PageId)
             {

@@ -12,14 +12,13 @@ namespace FacebookAutoPost.Models
         {
         }
 
-        public AutoPost(string id, string token, string userApi, string postTemp, string freq, DateTime time, string apiK, string uri)
+        public AutoPost(string id, string token, string userApi, string postTemp, string freq, string apiK, string uri)
         {
             PageId = id;
             Token = token;
             UserAPI = userApi;
             PostTemplate = postTemp;
             Frequency = freq;
-            Time = time;
             ApiKey = apiK;
             Uri = uri;
         }
@@ -39,8 +38,6 @@ namespace FacebookAutoPost.Models
         public string PostTemplate { get; set; }
 
         public string Frequency { get; set; }
-
-        public DateTime Time { get; set; }
 
         public string ApiKey { get; set; }
 
