@@ -1,15 +1,20 @@
-﻿@model IEnumerable<FacebookAutoPost.Models.AutoPost>
+﻿<!DOCTYPE html>
+<html>
+
+@model IEnumerable<FacebookAutoPost.Models.AutoPost>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<body>
+
+<h1>Auto Post List:</h1>
 
 <p class="text-right">
-    <a asp-action="Create" class="btn btn-primary">Create New</a> <!--why no asp controller?-->
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
-<table class="table table-bordered">
+<table class="w-100 table table-bordered table-hover">
     <thead>
         <tr>
             <th>
@@ -42,16 +47,16 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="text-break">
                 @Html.DisplayFor(modelItem => item.PageId)
             </td>
-            <td>
+            <td class="text-break">
                 @Html.DisplayFor(modelItem => item.Token)
             </td>
-            <td>
+            <td class="text-break">
                 @Html.DisplayFor(modelItem => item.UserAPI)
             </td>
-            <td>
+            <td class="text-break">
                 @Html.DisplayFor(modelItem => item.PostTemplate)
             </td>
             <td>
@@ -60,18 +65,20 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Time)
             </td>
-            <td>
+            <td class="text-break">
                 @Html.DisplayFor(modelItem => item.ApiKey)
             </td>
-            <td>
+            <td class="text-break">
                 @Html.DisplayFor(modelItem => item.Uri)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PageId" class="btn btn-info">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PageId" class="btn btn-info">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PageId" class="btn btn-danger">Delete</a> <!--why asp-route-id="item.PageId" and not asp-route-id="AutoPost.PageId ??"-->
+            <td class="align-middle text-center">
+                <a asp-action="Edit" asp-route-id="@item.PageId" class="btn btn-info">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.PageId" class="btn btn-info">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.PageId" class="btn btn-danger">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+</body>
+</html>
