@@ -203,9 +203,11 @@ namespace FacebookAutoPost.Controllers
             return frequency;
         }
 
+
+        //We use GerParamUri because we need to know in advance how many params are there to make the FE dynamic.
+        //If we use ParamUri we need to save in DB another column of "number of params".
         [HttpPost]
         [ValidateAntiForgeryToken] // check if have token - only if logged in - security
-
         public async Task<IActionResult> Create([Bind("PageId,Token,UserAPI,PostTemplate,Frequency,ApiKey,Uri,DayRandOrSpecific,MonthDayRandOrSpecific,WeekDayRandOrSpecific,DayOfMonth,DayInWeek,TimeDaySpecific")] PageInput pageInput)
         {
             if (ModelState.IsValid)
@@ -226,9 +228,9 @@ namespace FacebookAutoPost.Controllers
 
                     //ARBEL: put in comment when we want to debug
                     // schedule job
-                    var scheduled = await scheduler.scheduleCronJob<PostBookingJob>(frequency.Cron, autoPost.PageId, schedulerGroup, autoPost.PageId);
-                    
-                    if(scheduled == fail)
+                    var scheduled = await scheduler.scheduleCronJob<GeneralJob>(frequency.Cron, autoPost.PageId, schedulerGroup, autoPost.PageId);
+
+                    if (scheduled == fail)
                     {
                         //TODO: failed to schedule job
                     }
