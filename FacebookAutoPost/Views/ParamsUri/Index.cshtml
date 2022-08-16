@@ -1,8 +1,13 @@
-﻿@model IEnumerable<FacebookAutoPost.Models.ParamsUri>
+﻿<!DOCTYPE html>
+<html>
+
+@model IEnumerable<FacebookAutoPost.Models.ParamsUri>
 
 @{
     ViewData["Title"] = "Index";
 }
+
+<body>
 
 <h1>Param Uri Table</h1>
 
@@ -42,8 +47,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.RandomValue3)
             </th>
-@*            <th>Change</th>
-*@        </tr>
+            <th>Change</th>
+        </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
@@ -78,12 +83,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.RandomValue3)
             </td>                
-            @*<td
-                <a asp-action="Edit" asp-route-id="@item.PageId" class="btn btn-info">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PageId" class="btn btn-info">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PageId" class="btn btn-danger">Delete</a> <!--why asp-route-id="item.PageId" and not asp-route-id="AutoPost.PageId ??"-->
-            </td>*@
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PageId" class="btn btn-info">Edit</a>
+            </td>
         </tr>
 }
     </tbody>
 </table>
+</body>
+</html>
