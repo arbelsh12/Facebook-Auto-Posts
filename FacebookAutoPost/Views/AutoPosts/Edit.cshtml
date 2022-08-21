@@ -9,23 +9,22 @@
 <h4>AutoPost</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8">
         <form asp-action="Edit">
-            @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
             <input type="hidden" asp-for="PageId" />
             <div class="form-group">
                 <label asp-for="Token" class="control-label"></label>
-                <input asp-for="Token" class="form-control" />
+                <textarea asp-for="Token" class="form-control"></textarea>
                 <span asp-validation-for="Token" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="UserAPI" class="control-label"></label>
-                <input asp-for="UserAPI" class="form-control" />
+                <textarea asp-for="UserAPI" class="form-control"></textarea>
                 <span asp-validation-for="UserAPI" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PostTemplate" class="control-label"></label>
-                <input asp-for="PostTemplate" class="form-control" />
+                <textarea asp-for="PostTemplate" class="form-control" rows="10"></textarea>
                 <span asp-validation-for="PostTemplate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -54,12 +53,12 @@
             </div>
              <div class="form-group">
                 <label asp-for="ApiKey" class="control-label"></label>
-                <input asp-for="ApiKey" class="form-control" />
+                <textarea asp-for="ApiKey" class="form-control"></textarea>
                 <span asp-validation-for="ApiKey" class="text-danger"></span>
             </div>
              <div class="form-group">
                 <label asp-for="Uri" class="control-label"></label>
-                <input asp-for="Uri" class="form-control" />
+                <textarea asp-for="Uri" class="form-control"></textarea>
                 <span asp-validation-for="Uri" class="text-danger"></span>
             </div>
             <div class="form-group">
