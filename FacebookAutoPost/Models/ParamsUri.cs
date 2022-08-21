@@ -15,20 +15,6 @@ namespace FacebookAutoPost.Models
             PageId = pageId;
         }
 
-        //public ParamsUri(string pageId, bool randomValue1, bool randomValue2, bool randomValue3, string paramType1 = null, string paramOne = null, string paramType2 = null, string paramTwo = null, string paramType3 = null, string paramThree = null)
-        //{
-        //    PageId = PageId;
-        //    RandomValue1 = randomValue1;
-        //    RandomValue2 = randomValue2;
-        //    RandomValue3 = randomValue3;
-        //    ParamType1 = paramType1;
-        //    ParamType2 = paramType2;
-        //    ParamType3 = paramType3;
-        //    ParamOne = paramOne;
-        //    ParamTwo = paramTwo;
-        //    ParamThree = paramThree;
-        //}
-
         public ParamsUri(string pageId, string paramType1, string paramOne, bool randomValue1, string paramType2, string paramTwo, bool randomValue2, string paramType3, string? paramThree, bool randomValue3)
         {
             PageId = pageId;
