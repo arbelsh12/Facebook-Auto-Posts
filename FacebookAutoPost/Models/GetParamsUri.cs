@@ -12,7 +12,6 @@ namespace FacebookAutoPost.Models
         [DisplayName("Page ID")]
         public string PageId { get; set; }
 
-        //[DisplayName("num")]
         public int NumParams{ get; set; }
 
         [DisplayName("Params In URI")]

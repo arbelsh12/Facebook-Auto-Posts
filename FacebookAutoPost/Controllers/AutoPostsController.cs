@@ -266,11 +266,17 @@ namespace FacebookAutoPost.Controllers
 
             //paramsUri.ParamTwo = _paramsUri.Count > 1 ? "2" : null;
             //paramsUri.ParamThree = _paramsUri.Count > 3 ? "3" : null;
-
-            GetParamsUri paramsUri = new GetParamsUri(pageId);
-            paramsUri.NumParams = _paramsUri.Count;
-            paramsUri.ParamsUri = _paramsUri;
-            return View(paramsUri); 
+            try
+            {
+                GetParamsUri getParamsUri = new GetParamsUri(pageId);
+                getParamsUri.NumParams = _paramsUri.Count;
+                getParamsUri.ParamsUri = _paramsUri;
+                return View(getParamsUri);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         //is called when the form is submited
@@ -278,15 +284,22 @@ namespace FacebookAutoPost.Controllers
         [ValidateAntiForgeryToken] // check if have token - only if logged in - security
         public async Task<IActionResult> GetParamsUri([Bind("PageId,ParamType1,ParamOne,RandomValue1,ParamType2,ParamTwo,RandomValue2,ParamType3,ParamThree,RandomValue3")] ParamsUri paramsUri)
         {
-            // add params to DB
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(paramsUri);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index)); // insted of return to a View, retrun to an action that returns a View -> to make sure the new View is updated with the new data
-                List<ParamsUri.Params> paramArray = _context.ParamsUri.Find(paramsUri.PageId).ParamArray;
-            }
+                // add params to DB
+                if (ModelState.IsValid)
+                {
+                    _context.Add(paramsUri);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index)); // insted of return to a View, retrun to an action that returns a View -> to make sure the new View is updated with the new data
+                }
 
+                return View(paramsUri);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             return View(paramsUri);
         }
 
@@ -312,9 +325,9 @@ namespace FacebookAutoPost.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("PageId,Token,UserAPI,PostTemplate,Frequency,ApiKey,Uri")] AutoPost autoPost)
+        public async Task<IActionResult> Edit(string id, [Bind("PageId,Token,UserAPI,PostTemplate,Frequency,ApiKey,Uri,DayRandOrSpecific,MonthDayRandOrSpecific,WeekDayRandOrSpecific,DayOfMonth,DayInWeek,TimeDaySpecific")] PageInput pageInput)
         {
-            if (id != autoPost.PageId)
+            if (id != pageInput.PageId)
             {
                 return NotFound();
             }
@@ -323,12 +336,49 @@ namespace FacebookAutoPost.Controllers
             {
                 try
                 {
-                    _context.Update(autoPost);
-                    await _context.SaveChangesAsync();
+                    StamClass stamClass = new StamClass(); //the class check valid placer holders in uri
+                    int numParams = await stamClass.countParamsUri(pageInput.Uri);
+                    Frequency newFrequency = await processFreq(pageInput);
+
+                    _context.Frequency.Update(newFrequency);
+
+                    if (numParams >= 0)
+                    {
+                        // take relevant information from PageInput and create AutoPost
+                        AutoPost autoPost = new AutoPost(pageInput.PageId, pageInput.Token, pageInput.UserAPI, pageInput.PostTemplate, pageInput.Frequency, pageInput.ApiKey, pageInput.Uri);
+
+                        _context.AutoPosts.Update(autoPost);
+                        await _context.SaveChangesAsync();
+
+                        //ARBEL: put in comment when we want to debug
+                        // schedule job
+                        var scheduled = await scheduler.editExitingCronTrigger(newFrequency.Cron, schedulerGroup, autoPost.PageId, autoPost.PageId);
+
+                        if (scheduled == fail)
+                        {
+                            //TODO: failed to schedule job
+                        }
+
+                        if (numParams == 0)
+                        {
+                            return RedirectToAction(nameof(Index));
+                        }
+                        else
+                        {
+                            List<string> paramsUri = await stamClass.getItemsBetweenBrackets(autoPost.Uri);
+
+                            //TODO: add editParamsUri function like in ParamsUriController
+                            return RedirectToAction("EditParamsUri", new { _paramsUri = paramsUri, pageId = autoPost.PageId });
+                        }
+                    }
+                    else
+                    {
+                        // TODO: ERROR in URI
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AutoPostExists(autoPost.PageId))
+                    if (!AutoPostExists(pageInput.PageId))
                     {
                         return NotFound();
                     }
@@ -339,8 +389,49 @@ namespace FacebookAutoPost.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(autoPost);
+            return View(pageInput);
         }
+        
+        public IActionResult EditParamsUri(List<string> _paramsUri, string pageId)
+        {
+            try
+            {
+                GetParamsUri getParamsUri = new GetParamsUri(pageId);
+                getParamsUri.NumParams = _paramsUri.Count;
+                getParamsUri.ParamsUri = _paramsUri;
+                return View(getParamsUri);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        //is called when the form is submited
+        [HttpPost]
+        [ValidateAntiForgeryToken] // check if have token - only if logged in - security
+        public async Task<IActionResult> EditParamsUri([Bind("PageId,ParamType1,ParamOne,RandomValue1,ParamType2,ParamTwo,RandomValue2,ParamType3,ParamThree,RandomValue3")] ParamsUri paramsUriInput)
+        {
+            try
+            {
+                // edit params in the DB
+                if (ModelState.IsValid)
+                {
+                    ParamsUri paramsUri = new ParamsUri(paramsUriInput.PageId, paramsUriInput.ParamType1, paramsUriInput.ParamOne, paramsUriInput.RandomValue1, paramsUriInput.ParamType2, paramsUriInput.ParamTwo, paramsUriInput.RandomValue2, paramsUriInput.ParamType3, paramsUriInput.ParamThree, paramsUriInput.RandomValue3);
+                    _context.ParamsUri.Update(paramsUri);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index)); // insted of return to a View, retrun to an action that returns a View -> to make sure the new View is updated with the new data
+                }
+
+                return View(paramsUriInput);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return View(paramsUriInput);
+        }
+
 
         // GET: AutoPosts/Delete/5
         public async Task<IActionResult> Delete(string id)
