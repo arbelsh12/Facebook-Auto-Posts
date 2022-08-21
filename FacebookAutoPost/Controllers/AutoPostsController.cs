@@ -56,22 +56,6 @@ namespace FacebookAutoPost.Controllers
             return View();
         }
 
-        //the original create
-        // POST: AutoPosts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken] // check if have token - only if logged in - security
-        //public async Task<IActionResult> Create([Bind("PageId,Token,UserAPI,PostTemplate,Frequency,Time,ApiKey,Uri")] AutoPost autoPost)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(autoPost);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index)); // insted of return to a View, retrun to an action that returns a View -> to make sure the new View is updated with the new data
-        //    }
-        //    return View(autoPost);
-        //}
 
         private async Task <string> getDay(string day)
         {
@@ -210,62 +194,65 @@ namespace FacebookAutoPost.Controllers
         [ValidateAntiForgeryToken] // check if have token - only if logged in - security
         public async Task<IActionResult> Create([Bind("PageId,Token,UserAPI,PostTemplate,Frequency,ApiKey,Uri,DayRandOrSpecific,MonthDayRandOrSpecific,WeekDayRandOrSpecific,DayOfMonth,DayInWeek,TimeDaySpecific")] PageInput pageInput)
         {
-            if (ModelState.IsValid)
+            try
             {
-                StamClass stamClass = new StamClass(); //the class check valid placer holders in uri
-                int numParams = await stamClass.countParamsUri(pageInput.Uri);
-
-                Frequency frequency = await processFreq(pageInput);
-                _context.Add(frequency);
-
-                if (numParams >= 0)
+                if (ModelState.IsValid)
                 {
-                    // take relevant information from PageInput and create AutoPost
-                    AutoPost autoPost = new AutoPost(pageInput.PageId, pageInput.Token, pageInput.UserAPI, pageInput.PostTemplate, pageInput.Frequency, pageInput.ApiKey, pageInput.Uri);
+                    StamClass stamClass = new StamClass(); //the class check valid placer holders in uri
+                    int numParams = await stamClass.countParamsUri(pageInput.Uri);
 
-                    _context.Add(autoPost);
-                    await _context.SaveChangesAsync();
+                    Frequency frequency = await processFreq(pageInput);
+                    _context.Add(frequency);
 
-                    //ARBEL: put in comment when we want to debug
-                    // schedule job
-                    var scheduled = await scheduler.scheduleCronJob<GeneralJob>(frequency.Cron, autoPost.PageId, schedulerGroup, autoPost.PageId);
-
-                    if (scheduled == fail)
+                    if (numParams >= 0)
                     {
-                        //TODO: failed to schedule job
-                    }
+                        // take relevant information from PageInput and create AutoPost
+                        AutoPost autoPost = new AutoPost(pageInput.PageId, pageInput.Token, pageInput.UserAPI, pageInput.PostTemplate, pageInput.Frequency, pageInput.ApiKey, pageInput.Uri);
+                        _context.Add(autoPost);
+                        await _context.SaveChangesAsync();
 
-                    if (numParams == 0)
-                    {
-                        return RedirectToAction(nameof(Index));
+                        //ARBEL: put in comment when we want to debug
+                        // schedule job
+                        var scheduled = await scheduler.scheduleCronJob<GeneralJob>(frequency.Cron, autoPost.PageId, schedulerGroup, autoPost.PageId);
+
+                        if (scheduled == fail)
+                        {
+                            //TODO: failed to schedule job
+                        }
+
+                        if (numParams == 0)
+                        {
+                            return RedirectToAction(nameof(Index));
+                        }
+                        else
+                        {
+                            List<string> paramsUri = await stamClass.getItemsBetweenBrackets(autoPost.Uri);
+
+                            //TODO: maybe can changed to calling the GetParamsUri action
+                            return RedirectToAction("GetParamsUri", new { _paramsUri = paramsUri, pageId = autoPost.PageId });
+                        }
                     }
                     else
                     {
-                        List<string> paramsUri = await stamClass.getItemsBetweenBrackets(autoPost.Uri);
-
-                        //TODO: maybe can changed to calling the GetParamsUri action
-                        return RedirectToAction("GetParamsUri", new { _paramsUri = paramsUri, pageId = autoPost.PageId });
+                        throw new Exception("The amout of params is negative. Try again.");
                     }
-                }
-                else
-                {
-                    // TODO: ERROR in URI
-                }
 
-                 // insted of return to a View, retrun to an action that returns a View -> to make sure the new View is updated with the new data
+                    // insted of return to a View, retrun to an action that returns a View -> to make sure the new View is updated with the new data
+                }
+            }
+            catch (Exception ex)
+            {
+                await RemoveUnsuccessfulAutoPostFromDB(pageInput.PageId);
+                throw ex;
             }
 
             return View();
         }
 
+       
 
-        public IActionResult GetParamsUri(List<string> _paramsUri, string pageId)
+        public async Task<IActionResult> GetParamsUri(List<string> _paramsUri, string pageId)
         {
-            //ParamsUri paramsUri = new ParamsUri();  
-            //paramsUri.PageId = pageId;
-
-            //paramsUri.ParamTwo = _paramsUri.Count > 1 ? "2" : null;
-            //paramsUri.ParamThree = _paramsUri.Count > 3 ? "3" : null;
             try
             {
                 GetParamsUri getParamsUri = new GetParamsUri(pageId);
@@ -275,6 +262,7 @@ namespace FacebookAutoPost.Controllers
             }
             catch (Exception ex)
             {
+                await RemoveUnsuccessfulAutoPostFromDB(pageId);
                 throw ex;
             }
         }
@@ -298,8 +286,10 @@ namespace FacebookAutoPost.Controllers
             }
             catch (Exception ex)
             {
+                await RemoveUnsuccessfulAutoPostFromDB(paramsUri.PageId);
                 throw ex;
             }
+
             return View(paramsUri);
         }
 
@@ -481,6 +471,30 @@ namespace FacebookAutoPost.Controllers
         private bool AutoPostExists(string id)
         {
             return _context.AutoPosts.Any(e => e.PageId == id);
+        }
+
+        private async Task<IActionResult> RemoveUnsuccessfulAutoPostFromDB(string pageId)
+        {
+            var autoPost = await _context.AutoPosts.FindAsync(pageId);
+            var paramsUri = await _context.ParamsUri.FindAsync(pageId);
+            var freq = await _context.Frequency.FindAsync(pageId);
+            _context.AutoPosts.Remove(autoPost);
+
+            if (paramsUri != null)
+            {
+                _context.ParamsUri.Remove(paramsUri);
+            }
+
+            if (freq != null)
+            {
+                _context.Frequency.Remove(freq);
+            }
+
+            await _context.SaveChangesAsync();
+
+            scheduler.deleteScheduledJob(pageId, schedulerGroup);
+
+            return View(autoPost);
         }
     }
 }
