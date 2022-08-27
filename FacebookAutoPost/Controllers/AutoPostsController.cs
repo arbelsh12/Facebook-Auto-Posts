@@ -16,6 +16,7 @@ namespace FacebookAutoPost.Controllers
         private Scheduler scheduler;
         private readonly int fail = -1;
         private readonly string schedulerGroup = "General";
+        private Random rnd;
 
 
         public AutoPostsController(ApplicationDbContext context)
@@ -23,6 +24,8 @@ namespace FacebookAutoPost.Controllers
             _context = context;
             scheduler = new Scheduler();
             scheduler.initScheduler();
+            rnd = new Random();
+
 
         }
 
@@ -75,6 +78,20 @@ namespace FacebookAutoPost.Controllers
                     return "Friday";
                 case "SAT":
                     return "Saturday";
+                case "1":
+                    return "Sunday";
+                case "2":
+                    return "Monday";
+                case "3":
+                    return "Tuesday";
+                case "4":
+                    return "Wednesday";
+                case "5":
+                    return "Thursday";
+                case "6":
+                    return "Friday";
+                case "7":
+                    return "Saturday";
             }
 
             return "ERROR";
@@ -86,58 +103,69 @@ namespace FacebookAutoPost.Controllers
         {
             Frequency frequency = new Frequency();
             frequency.PageId = pageInput.PageId;
+            string cron;
 
             switch (pageInput.Frequency)
             {
                 case "day":
+                    string minut;
+                    string hour;
+
                     if (pageInput.DayRandOrSpecific == "Rand")
                     {
+                        minut = rnd.Next(0, 59).ToString();
+                        hour = rnd.Next(1, 23).ToString();
                         frequency.IsRandom = true;
-                        // get random time at a day every day? 
                     }
                     else
                     {
                         string[] time = pageInput.TimeDaySpecific.Split(':');
-                        string hour = time[0];
-                        string minut = time[1];
-
-                        string cron = await Scheduler.FrequencyToCron("0", minut, hour, "*", "?", "*", true);
-
-                        frequency.Cron = cron;
+                         hour = time[0];
+                         minut = time[1];
                         frequency.IsRandom = false;
-                        frequency.PostFrequency = String.Format("every day at {0}:{1}", hour, minut);
                     }
+
+                    cron = await Scheduler.FrequencyToCron("0", minut, hour, "*", "?", "*", true);
+                    frequency.Cron = cron;
+                    frequency.PostFrequency = String.Format("every day at {0}:{1}", hour, minut);
+
                     break;
                 case "week":
+                    string day;
+
                     if (pageInput.WeekDayRandOrSpecific == "Rand")
                     {
                         frequency.IsRandom = true;
-                        // get random time once a week? 
+                        day = rnd.Next(1, 7).ToString();
                     }
                     else
                     {
-                        string cron = await Scheduler.FrequencyToCron("0", "0", "12", "?", pageInput.DayInWeek, "*", true);
-
-                        frequency.Cron = cron;
+                        day = pageInput.DayInWeek;
                         frequency.IsRandom = false;
-                        frequency.PostFrequency = String.Format("every week on {0}, at 12:00", await getDay(pageInput.DayInWeek));
                     }
+
+                    cron = await Scheduler.FrequencyToCron("0", "0", "12", "?",day, "*", true);
+                    frequency.Cron = cron;
+                    frequency.PostFrequency = String.Format("every week on {0}, at 12:00", await getDay(day));
+
                     break;
                 case "month":
+                    string dayMonth;
                     if (pageInput.MonthDayRandOrSpecific == "Rand")
                     {
                         frequency.IsRandom = true;
-                        // get random time once a month? 
-
+                        dayMonth = rnd.Next(1, 30).ToString();
                     }
                     else
                     {
-                        string cron = await Scheduler.FrequencyToCron("0", "0", "12", pageInput.DayOfMonth, "?", "*", true);
-
-                        frequency.Cron = cron;
+                        dayMonth = pageInput.DayOfMonth;
                         frequency.IsRandom = false;
-                        frequency.PostFrequency = string.Format("on the {0} of every month at 12:00", pageInput.DayOfMonth);
                     }
+
+                    cron = await Scheduler.FrequencyToCron("0", "0", "12",dayMonth , "?", "*", true);
+                    frequency.Cron = cron;
+                    frequency.PostFrequency = string.Format("on the {0} of every month at 12:00", dayMonth);
+
                     break;
                 case "2Min":
                     string cron2Min = await Scheduler.FrequencyToCron("0", "2", "*", "*", "?", "*", false); //"0 0/2 * * * ?"
