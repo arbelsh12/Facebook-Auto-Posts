@@ -3,6 +3,7 @@ using FacebookAutoPost.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
+//TODO: delete this controller
 namespace FacebookAutoPost.Controllers
 {
     public class PostingController : Controller

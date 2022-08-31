@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace FacebookAutoPost.Models
 {
-    public class StamClass
+    public class UriValidation
     {
-        public StamClass()
-        {
-
-        }
+        public UriValidation()
+        { }
 
         public async Task<int> countParamsUri(string uri)
         {
@@ -106,7 +104,6 @@ namespace FacebookAutoPost.Models
             return betweenBrackets;
         }
 
-        // problem in case -> '{0{1}}' or '{{0}1}'
         public async Task<bool> checkValidBetweenBrackets(List<string> betweenBrackets)
         {
             foreach (string betweenBracketsItem in betweenBrackets)
