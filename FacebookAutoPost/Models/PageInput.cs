@@ -12,6 +12,7 @@ namespace FacebookAutoPost.Models
     {
         [Key] // indicates that the first property is the primary key in the DB
         [DisplayName("Page ID")]
+        [Required]
         public string PageId { get; set; }
 
         [Required]
@@ -22,12 +23,16 @@ namespace FacebookAutoPost.Models
         public string UserAPI { get; set; }
 
         [DisplayName("Post Template")]
+        [Required]
         public string PostTemplate { get; set; }
 
+        [Required]
         public string Frequency { get; set; }
 
+        [Required]
         public string ApiKey { get; set; }
 
+        [Required]
         public string Uri { get; set; }
 
         public string DayRandOrSpecific { get; set; }
