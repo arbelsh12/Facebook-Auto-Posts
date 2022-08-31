@@ -5,12 +5,11 @@ using System.ComponentModel;
 
 namespace FacebookAutoPost.Models
 {
-    //assumption: one Auto post pare FB page
+    //assumption: There's a limit of one Auto post pare FB page
     public class AutoPost
     {
         public AutoPost()
-        {
-        }
+        { }
 
         public AutoPost(string id, string token, string userApi, string postTemp, string freq, string apiK, string uri)
         {
