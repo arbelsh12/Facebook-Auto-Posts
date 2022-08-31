@@ -15,7 +15,7 @@ namespace FacebookAutoPost.Models
             PageId = pageId;
         }
 
-        public ParamsUri(string pageId, string paramType1, string paramOne, bool randomValue1, string paramType2, string paramTwo, bool randomValue2, string paramType3, string? paramThree, bool randomValue3)
+        public ParamsUri(string pageId, string paramType1, string paramOne, bool randomValue1, string paramType2, string paramTwo, bool randomValue2, string paramType3, string paramThree, bool randomValue3)
         {
             PageId = pageId;
             ParamType1 = paramType1;
