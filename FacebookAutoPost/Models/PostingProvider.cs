@@ -21,8 +21,6 @@ namespace FacebookAutoPost.Models
 
             var content = new FormUrlEncodedContent(values);
 
-            //send request to facebook api
-            // recive answer from faceook api
 
             HttpResponseMessage response = await client.PostAsync(url, content);
             var responseString = await response.Content.ReadAsStringAsync();
