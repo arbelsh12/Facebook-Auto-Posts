@@ -12,11 +12,13 @@ namespace FacebookAutoPost.Models
 
         public async Task<string> postToPage(string accessToken, string url, string msg)
         {
+            string decodeToken = EncodeToken.Base64Decode(accessToken);
+
             //make_msg
             var values = new Dictionary<string, string>
             {
                 { "message", msg },
-                { "access_token", accessToken }
+                { "access_token", decodeToken }
             };
 
             var content = new FormUrlEncodedContent(values);

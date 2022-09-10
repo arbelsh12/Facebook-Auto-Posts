@@ -213,7 +213,8 @@ namespace FacebookAutoPost.Controllers
 
                     if (numParams >= 0)
                     {
-                        AutoPost autoPost = new AutoPost(pageInput.PageId, pageInput.Token, pageInput.UserAPI, pageInput.PostTemplate, pageInput.Frequency, pageInput.ApiKey, pageInput.Uri);
+                        string encodeToken = EncodeToken.Base64Encode(pageInput.Token);
+                        AutoPost autoPost = new AutoPost(pageInput.PageId, encodeToken, pageInput.UserAPI, pageInput.PostTemplate, pageInput.Frequency, pageInput.ApiKey, pageInput.Uri);
                         _context.Add(autoPost);
                         await _context.SaveChangesAsync();
 
@@ -335,7 +336,8 @@ namespace FacebookAutoPost.Controllers
                     if (numParams >= 0)
                     {
                         // take relevant information from PageInput and create AutoPost
-                        AutoPost autoPost = new AutoPost(pageInput.PageId, pageInput.Token, pageInput.UserAPI, pageInput.PostTemplate, pageInput.Frequency, pageInput.ApiKey, pageInput.Uri);
+                        string encodeToken = EncodeToken.Base64Encode(pageInput.Token);
+                        AutoPost autoPost = new AutoPost(pageInput.PageId, encodeToken, pageInput.UserAPI, pageInput.PostTemplate, pageInput.Frequency, pageInput.ApiKey, pageInput.Uri);
 
                         _context.AutoPosts.Update(autoPost);
                         await _context.SaveChangesAsync();
