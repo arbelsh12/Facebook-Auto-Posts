@@ -24,10 +24,10 @@ namespace FacebookAutoPost.Models
 
         private List<string> GetParamsVals(string pageId)
         {
-            List<ParamsUri.Params> paramList = _context.ParamsUri.Find(pageId).ParamArray;
+            List<ParamsUri.Params> paramList = _context.ParamsUri.Find(pageId)?.ParamArray;
             List<string> paramArray = new List<string>();
 
-            for (int i = 0; i < paramList.Count; i++)
+            for (int i = 0; i < paramList?.Count; i++)
             {
                 if(paramList[i].random == true && paramList[i].paramType == "City")
                 {
