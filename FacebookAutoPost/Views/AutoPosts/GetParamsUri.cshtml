@@ -13,6 +13,7 @@
         <form asp-action="GetParamsUri">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <p style="color:#DC0000;">Inorder to create an array: create a list and separate the values with ";".<br></p>
                 <input asp-for="PageId" type="hidden" value=@Model.PageId class="form-control" />
                 <span asp-validation-for="ParamOne" class="text-danger"></span>
             </div>
