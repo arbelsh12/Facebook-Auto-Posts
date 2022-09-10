@@ -268,7 +268,6 @@ namespace FacebookAutoPost.Controllers
 
             return View();
         }
-
        
 
         public async Task<IActionResult> GetParamsUri(List<string> _paramsUri, string pageId)
@@ -345,8 +344,8 @@ namespace FacebookAutoPost.Controllers
             {
                 try
                 {
-                    UriValidation stamClass = new UriValidation(); //the class check valid placer holders in uri
-                    int numParams = await stamClass.countParamsUri(pageInput.Uri);
+                    UriValidation uriValid = new UriValidation(); //the class check valid placer holders in uri
+                    int numParams = await uriValid.countParamsUri(pageInput.Uri);
                     Frequency newFrequency = await processFreq(pageInput);
 
                     _context.Frequency.Update(newFrequency);
@@ -359,7 +358,15 @@ namespace FacebookAutoPost.Controllers
                         _context.AutoPosts.Update(autoPost);
                         await _context.SaveChangesAsync();
 
-                        var scheduled = await scheduler.editExitingCronTrigger(newFrequency.Cron, schedulerGroup, autoPost.PageId, autoPost.PageId);
+                        //var scheduled = await scheduler.editExitingCronTrigger(newFrequency.Cron, schedulerGroup, autoPost.PageId, autoPost.PageId);
+                        var scheduledTemp = await scheduler.editExitingCronTrigger(newFrequency.Cron, schedulerGroup, autoPost.PageId, "tempSchedule");
+
+                        if (scheduledTemp == fail)
+                        {
+                            throw new Exception("The scheduledTemp failed. Try again.");
+                        }
+
+                        var scheduled = await scheduler.editExitingCronTrigger(newFrequency.Cron, schedulerGroup, "tempSchedule", autoPost.PageId);
 
                         if (scheduled == fail)
                         {
@@ -372,7 +379,7 @@ namespace FacebookAutoPost.Controllers
                         }
                         else
                         {
-                            List<string> paramsUri = await stamClass.getItemsBetweenBrackets(autoPost.Uri);
+                            List<string> paramsUri = await uriValid.getItemsBetweenBrackets(autoPost.Uri);
 
                             return RedirectToAction("EditParamsUri", new { _paramsUri = paramsUri, pageId = autoPost.PageId });
                         }

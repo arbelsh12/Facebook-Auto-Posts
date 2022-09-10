@@ -66,8 +66,6 @@ namespace FacebookAutoPost.Models
             }
 
             return worked;
-
-
         }
 
 
