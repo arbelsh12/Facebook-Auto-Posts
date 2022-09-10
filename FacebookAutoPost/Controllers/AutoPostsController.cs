@@ -35,24 +35,6 @@ namespace FacebookAutoPost.Controllers
             return View(await _context.AutoPosts.ToListAsync());
         }
 
-        // GET: AutoPosts/Details/5
-        public async Task<IActionResult> Details(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }    
-
-            var autoPost = await _context.AutoPosts
-                .FirstOrDefaultAsync(m => m.PageId == id);
-            if (autoPost == null)
-            {
-                return NotFound();
-            }
-
-            return View(autoPost);
-        }
-
         // GET: AutoPosts/Create
         public IActionResult Create()
         {
