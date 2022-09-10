@@ -46,6 +46,12 @@ namespace FacebookAutoPost.Models
             return Regex.IsMatch(date, dateRegex);
         }
 
-        
+        public string GetRandomArgFromArray(string value)
+        {
+            string[] array = value.Split(';');
+            int idx = rnd.Next(0, array.Length);
+
+            return array[idx];
+        }
     }
 }
