@@ -41,6 +41,10 @@ namespace FacebookAutoPost.Models
                 {
                     paramArray.Add(_postCreatingUtil.GetRandomFutureDate(null, null));
                 }
+                else if(paramList[i].paramType == "Array")
+                {
+                    paramArray.Add(_postCreatingUtil.GetRandomArgFromArray(paramList[i].value));
+                }
                 else if(!string.IsNullOrEmpty(paramList[i].value) && paramList[i].random == false)
                 {
                     paramArray.Add(paramList[i].value);
