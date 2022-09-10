@@ -38,8 +38,11 @@ namespace FacebookAutoPost.Models
 
             foreach (string sub in subs)
             {
-                value = sub[0] == '$' ? getValJson(sub, json) : sub;
-                post.Append(value + ' ');
+                if (!string.IsNullOrEmpty(sub))
+                {
+                    value = sub[0] == '$' ? getValJson(sub, json) : sub;
+                    post.Append(value + ' ');
+                }
             }
 
             return post.ToString();
@@ -51,6 +54,38 @@ namespace FacebookAutoPost.Models
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
+                RequestUri = new Uri(uri),
+                Headers =
+                {
+                    { "X-RapidAPI-Host", api },
+                    { "X-RapidAPI-Key", apiKey },
+                },
+            };
+            using (var response = await client.SendAsync(request))
+            {
+                try
+                {
+                    response.EnsureSuccessStatusCode();
+                }
+                catch (Exception ex)
+                {
+                    return await getJsonFromApiPost(api, apiKey, uri);
+
+                }
+
+                var body = await response.Content.ReadAsStringAsync();
+                JObject json = JObject.Parse(body);
+
+                return json;
+            }
+        }
+
+        public async Task<JObject> getJsonFromApiPost(string api, string apiKey, string uri)
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
                 RequestUri = new Uri(uri),
                 Headers =
                 {
