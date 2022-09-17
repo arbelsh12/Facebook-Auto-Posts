@@ -29,7 +29,6 @@ namespace FacebookAutoPost.Models
                   .UsingJobData("pageId", jobName)
                   .Build();
 
-            // Trigger the job to run now, and then every 40 seconds
             ITrigger trigger = TriggerBuilder.Create()
                 .WithIdentity(triggerName, jobGroup)
                 .WithCronSchedule(cron)
@@ -48,7 +47,6 @@ namespace FacebookAutoPost.Models
         }
 
 
-        //TODO: create a FE of editing
         public async Task<int> editExitingCronTrigger(string newCron, string group, string oldTriggerName, string newTriggerName)
         {
             TriggerKey key = new TriggerKey(oldTriggerName, group);
@@ -167,7 +165,7 @@ namespace FacebookAutoPost.Models
 
             if (onceA || dayMonth == "*" || dayMonth == "?")
             {
-                dayMonthCron = dayMonth; // ance a month at a specific date OR * for every day OR ? for it doesnt matter what day of the month
+                dayMonthCron = dayMonth; // once a month at a specific date OR * for every day OR ? for it doesnt matter what day of the month
             }
             else
             {

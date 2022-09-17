@@ -16,8 +16,8 @@ namespace FacebookAutoPost.Migrations
                     UserAPI = table.Column<string>(type: "TEXT", nullable: true),
                     PostTemplate = table.Column<string>(type: "TEXT", nullable: true),
                     Frequency = table.Column<string>(type: "TEXT", nullable: true),
-                    ApiKey = table.Column<string>(type: "TEXT", nullable: true),  // nullable ??
-                    Uri = table.Column<string>(type: "TEXT", nullable: true) // nullable ??
+                    ApiKey = table.Column<string>(type: "TEXT", nullable: true),  
+                    Uri = table.Column<string>(type: "TEXT", nullable: true) 
                 },
                 constraints: table =>
                 {
