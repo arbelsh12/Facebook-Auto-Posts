@@ -8,7 +8,7 @@ namespace FacebookAutoPost
     public class Program
     {
         public static void Main(string[] args)
-        {
+        {            
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -17,7 +17,12 @@ namespace FacebookAutoPost
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
-                });
+                    var port = System.Environment.GetEnvironmentVariable("PORT");
+
+                    webBuilder.UseStartup<Startup>()
+                    .UseUrls("http://*:" + port);
+               });
     }
 }
+
+
