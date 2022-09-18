@@ -19,29 +19,12 @@ namespace FacebookAutoPost.Migrations
                 {
                     table.PrimaryKey("PK_Frequency", x => x.PageId);
                 });
-
-            //migrationBuilder.CreateTable(
-            //    name: "ParamsUri",
-            //    columns: table => new
-            //    {
-            //        PageId = table.Column<string>(type: "TEXT", nullable: false),
-            //        ParamOne = table.Column<string>(type: "TEXT", nullable: true),
-            //        ParamTwo = table.Column<string>(type: "TEXT", nullable: true),
-            //        ParamThree = table.Column<string>(type: "TEXT", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_ParamsUri", x => x.PageId);
-            //    });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Frequency");
-
-            //migrationBuilder.DropTable(
-            //    name: "ParamsUri");
         }
     }
 }

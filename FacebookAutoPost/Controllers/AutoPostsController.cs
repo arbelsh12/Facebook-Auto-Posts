@@ -342,7 +342,6 @@ namespace FacebookAutoPost.Controllers
                         _context.AutoPosts.Update(autoPost);
                         await _context.SaveChangesAsync();
 
-                        //var scheduled = await scheduler.editExitingCronTrigger(newFrequency.Cron, schedulerGroup, autoPost.PageId, autoPost.PageId);
                         var scheduledTemp = await scheduler.editExitingCronTrigger(newFrequency.Cron, schedulerGroup, autoPost.PageId, "tempSchedule");
 
                         if (scheduledTemp == fail)
@@ -498,7 +497,7 @@ namespace FacebookAutoPost.Controllers
 
             await _context.SaveChangesAsync();
 
-            scheduler.deleteScheduledJob(pageId, schedulerGroup);
+            await scheduler.deleteScheduledJob(pageId, schedulerGroup);
 
             return View(autoPost);
         }

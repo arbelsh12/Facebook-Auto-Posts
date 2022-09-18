@@ -33,7 +33,6 @@ function setTime() {
         const timeLabel = document.createElement("label");
         timeLabel.for = "timeDay";
         timeLabel.className = "control-label";
-        //timeLabel.text = "Please enter the requested time";
 
         const timeInput = document.createElement("input");
         timeInput.type = "time";

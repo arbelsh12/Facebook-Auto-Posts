@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace FacebookAutoPost.Models
 {
-    //assumption: There's a limit of one Auto post pare FB page
+    //assumption: There's a limit of one Auto post per FB page
     public class AutoPost
     {
         public AutoPost()
