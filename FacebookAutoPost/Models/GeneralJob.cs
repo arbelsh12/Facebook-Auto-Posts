@@ -15,7 +15,7 @@ namespace FacebookAutoPost.Models
             JobDataMap dataMap = exeContext.JobDetail.JobDataMap;
                         
             string pageId = dataMap.GetString("pageId");
-            await generalApi.PostToPage(pageId, "test");
+            await generalApi.PostToPage(pageId);
         }
     }
 }

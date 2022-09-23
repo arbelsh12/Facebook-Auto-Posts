@@ -20,7 +20,7 @@ namespace FacebookAutoPost.Models
             _postCreatingUtil = new PostCreatingUtil();
         }
 
-        private List<string> GetParamsVals(string pageId)
+        private List<string> getParamsVals(string pageId)
         {
             List<ParamsUri.Params> paramList = _context.ParamsUri.Find(pageId)?.ParamArray;
             List<string> paramArray = new List<string>();
@@ -75,14 +75,13 @@ namespace FacebookAutoPost.Models
             return completedUri;
         }
 
-        // added test and return value beacause needed func to be async
-        public async Task<int> PostToPage(string pageID, string test)
+        public async Task<int> PostToPage(string pageID)
         {
             AutoPost user = _context.AutoPosts.Find(pageID);
-            List<string> paramArray = GetParamsVals(pageID);
+            List<string> paramArray = getParamsVals(pageID);
             string CompletedUriByParams = await GetCompletedUri(user, paramArray);
             string postCotent = await _postCreatingProvider.CreatePost(user, CompletedUriByParams);
-            var res = _postingProvider.postToPage(user.Token, user.PageUrl, postCotent).Result;
+            var res = _postingProvider.PostToPage(user.Token, user.PageUrl, postCotent).Result;
 
             return 1;
         }

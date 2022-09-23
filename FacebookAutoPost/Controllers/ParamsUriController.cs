@@ -58,7 +58,7 @@ namespace FacebookAutoPost.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ParamsUriExists(paramsUri.PageId))
+                    if (!paramsUriExists(paramsUri.PageId))
                     {
                         return NotFound();
                     }
@@ -72,7 +72,7 @@ namespace FacebookAutoPost.Controllers
             return View(paramsUri);
         }
 
-        private bool ParamsUriExists(string id)
+        private bool paramsUriExists(string id)
         {
             return _context.ParamsUri.Find(id) != null;
         }

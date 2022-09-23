@@ -21,7 +21,7 @@ namespace FacebookAutoPost.Models
 
         
         // The jobName is the pageID
-        public async Task<int> scheduleCronJob<T>(string cron, string jobName, string jobGroup, string triggerName) where T : IJob
+        public async Task<int> ScheduleCronJob<T>(string cron, string jobName, string jobGroup, string triggerName) where T : IJob
         {
             // define the job and tie it to our T class
             IJobDetail job = JobBuilder.Create<T>()
@@ -47,7 +47,7 @@ namespace FacebookAutoPost.Models
         }
 
 
-        public async Task<int> editExitingCronTrigger(string newCron, string group, string oldTriggerName, string newTriggerName)
+        public async Task<int> EditExitingCronTrigger(string newCron, string group, string oldTriggerName, string newTriggerName)
         {
             TriggerKey key = new TriggerKey(oldTriggerName, group);
 
@@ -67,7 +67,7 @@ namespace FacebookAutoPost.Models
         }
 
 
-        public async Task<int> deleteScheduledJob(string jobName, string group)
+        public async Task<int> DeleteScheduledJob(string jobName, string group)
         {
             JobKey key = new JobKey(jobName, group);
 

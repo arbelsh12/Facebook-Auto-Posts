@@ -11,14 +11,14 @@ namespace FacebookAutoPost.Models
         public UriPlaceHolderValidation()
         { }
 
-        public async Task<int> countParamsUri(string uri)
+        public async Task<int> CountParamsUri(string uri)
         {
-            bool isValid = await checkValidUri(uri);
+            bool isValid = await CheckValidUri(uri);
 
             if (!isValid) { return -1; }
 
-            List<string> betweenBrackets = await getItemsBetweenBrackets(uri);
-            isValid = await checkValidBetweenBrackets(betweenBrackets);
+            List<string> betweenBrackets = await GetItemsBetweenBrackets(uri);
+            isValid = await CheckValidBetweenBrackets(betweenBrackets);
 
             if (isValid)
             {
@@ -30,7 +30,7 @@ namespace FacebookAutoPost.Models
             }
         }
 
-        public async Task<bool> checkValidUri(string uri)
+        public async Task<bool> CheckValidUri(string uri)
         {
             Stack stack = new Stack();
 
@@ -64,7 +64,7 @@ namespace FacebookAutoPost.Models
             return new string(myArr);
         }
 
-        public async Task<List<string>> getItemsBetweenBrackets(string uri)
+        public async Task<List<string>> GetItemsBetweenBrackets(string uri)
         {
             Stack stack = new Stack();
             StringBuilder betweenBracketsItem = new StringBuilder();
@@ -104,7 +104,7 @@ namespace FacebookAutoPost.Models
             return betweenBrackets;
         }
 
-        public async Task<bool> checkValidBetweenBrackets(List<string> betweenBrackets)
+        public async Task<bool> CheckValidBetweenBrackets(List<string> betweenBrackets)
         {
             foreach (string betweenBracketsItem in betweenBrackets)
             {

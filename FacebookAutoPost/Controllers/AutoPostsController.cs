@@ -205,7 +205,7 @@ namespace FacebookAutoPost.Controllers
                 if (ModelState.IsValid)
                 {
                     UriPlaceHolderValidation uriValid = new UriPlaceHolderValidation();
-                    int numParams = await uriValid.countParamsUri(pageInput.Uri);
+                    int numParams = await uriValid.CountParamsUri(pageInput.Uri);
 
                     Frequency frequency = await processFreq(pageInput);
                     _context.Add(frequency);
@@ -218,7 +218,7 @@ namespace FacebookAutoPost.Controllers
                         await _context.SaveChangesAsync();
 
                         // schedule job
-                        var scheduled = await scheduler.scheduleCronJob<GeneralJob>(frequency.Cron, autoPost.PageId, schedulerGroup, autoPost.PageId);
+                        var scheduled = await scheduler.ScheduleCronJob<GeneralJob>(frequency.Cron, autoPost.PageId, schedulerGroup, autoPost.PageId);
 
                         if (scheduled == fail)
                         {
@@ -231,7 +231,7 @@ namespace FacebookAutoPost.Controllers
                         }
                         else
                         {
-                            List<string> paramsUri = await uriValid.getItemsBetweenBrackets(autoPost.Uri);
+                            List<string> paramsUri = await uriValid.GetItemsBetweenBrackets(autoPost.Uri);
 
                             return RedirectToAction("GetParamsUri", new { _paramsUri = paramsUri, pageId = autoPost.PageId });
                         }
@@ -327,7 +327,7 @@ namespace FacebookAutoPost.Controllers
                 try
                 {
                     UriPlaceHolderValidation uriValid = new UriPlaceHolderValidation(); //the class check valid placer holders in uri
-                    int numParams = await uriValid.countParamsUri(pageInput.Uri);
+                    int numParams = await uriValid.CountParamsUri(pageInput.Uri);
                     Frequency newFrequency = await processFreq(pageInput);
 
                     _context.Frequency.Update(newFrequency);
@@ -341,14 +341,14 @@ namespace FacebookAutoPost.Controllers
                         _context.AutoPosts.Update(autoPost);
                         await _context.SaveChangesAsync();
 
-                        var scheduledTemp = await scheduler.editExitingCronTrigger(newFrequency.Cron, schedulerGroup, autoPost.PageId, "tempSchedule");
+                        var scheduledTemp = await scheduler.EditExitingCronTrigger(newFrequency.Cron, schedulerGroup, autoPost.PageId, "tempSchedule");
 
                         if (scheduledTemp == fail)
                         {
                             throw new Exception("The scheduledTemp failed. Try again.");
                         }
 
-                        var scheduled = await scheduler.editExitingCronTrigger(newFrequency.Cron, schedulerGroup, "tempSchedule", autoPost.PageId);
+                        var scheduled = await scheduler.EditExitingCronTrigger(newFrequency.Cron, schedulerGroup, "tempSchedule", autoPost.PageId);
 
                         if (scheduled == fail)
                         {
@@ -361,7 +361,7 @@ namespace FacebookAutoPost.Controllers
                         }
                         else
                         {
-                            List<string> paramsUri = await uriValid.getItemsBetweenBrackets(autoPost.Uri);
+                            List<string> paramsUri = await uriValid.GetItemsBetweenBrackets(autoPost.Uri);
 
                             return RedirectToAction("EditParamsUri", new { _paramsUri = paramsUri, pageId = autoPost.PageId });
                         }
@@ -467,7 +467,7 @@ namespace FacebookAutoPost.Controllers
 
             await _context.SaveChangesAsync();
 
-            var deleted = scheduler.deleteScheduledJob(id, schedulerGroup);
+            var deleted = scheduler.DeleteScheduledJob(id, schedulerGroup);
 
             return RedirectToAction(nameof(Index));
         }
@@ -496,7 +496,7 @@ namespace FacebookAutoPost.Controllers
 
             await _context.SaveChangesAsync();
 
-            await scheduler.deleteScheduledJob(pageId, schedulerGroup);
+            await scheduler.DeleteScheduledJob(pageId, schedulerGroup);
 
             return View(autoPost);
         }

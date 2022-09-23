@@ -9,7 +9,7 @@ namespace FacebookAutoPost.Models
     {
         private readonly HttpClient client = new HttpClient();
 
-        public async Task<string> postToPage(string accessToken, string url, string msg)
+        public async Task<string> PostToPage(string accessToken, string url, string msg)
         {
             string decodeToken = EncodeToken.Base64Decode(accessToken);
 

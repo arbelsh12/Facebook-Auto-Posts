@@ -46,7 +46,7 @@ namespace FacebookAutoPost.Models
             return post.ToString();
         }
 
-        public async Task<JObject> getJsonFromApi(string api, string apiKey, string uri)
+        public async Task<JObject> GetJsonFromApi(string api, string apiKey, string uri)
         {
             var client = new HttpClient();
             var request = new HttpRequestMessage
@@ -67,7 +67,7 @@ namespace FacebookAutoPost.Models
                 }
                 catch (Exception ex)
                 {
-                    return await getJsonFromApiPost(api, apiKey, uri);
+                    return await GetJsonFromApiPost(api, apiKey, uri);
 
                 }
 
@@ -78,7 +78,7 @@ namespace FacebookAutoPost.Models
             }
         }
 
-        public async Task<JObject> getJsonFromApiPost(string api, string apiKey, string uri)
+        public async Task<JObject> GetJsonFromApiPost(string api, string apiKey, string uri)
         {
             var client = new HttpClient();
             var request = new HttpRequestMessage
@@ -104,7 +104,7 @@ namespace FacebookAutoPost.Models
         //methods for general API
         public async Task<string> CreatePost(AutoPost autoPost, string uri)
         {
-            JObject json = await getJsonFromApi(autoPost.UserAPI, autoPost.ApiKey, uri);
+            JObject json = await GetJsonFromApi(autoPost.UserAPI, autoPost.ApiKey, uri);
 
             string post = getPost(autoPost.PostTemplate, json).Replace(" \\n", Environment.NewLine);
 
