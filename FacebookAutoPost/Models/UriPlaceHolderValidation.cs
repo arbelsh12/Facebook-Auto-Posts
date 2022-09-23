@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace FacebookAutoPost.Models
 {
-    public class UriValidation
+    public class UriPlaceHolderValidation
     {
-        public UriValidation()
+        public UriPlaceHolderValidation()
         { }
 
         public async Task<int> countParamsUri(string uri)

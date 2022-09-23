@@ -204,7 +204,7 @@ namespace FacebookAutoPost.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    UriValidation uriValid = new UriValidation();
+                    UriPlaceHolderValidation uriValid = new UriPlaceHolderValidation();
                     int numParams = await uriValid.countParamsUri(pageInput.Uri);
 
                     Frequency frequency = await processFreq(pageInput);
@@ -326,7 +326,7 @@ namespace FacebookAutoPost.Controllers
             {
                 try
                 {
-                    UriValidation uriValid = new UriValidation(); //the class check valid placer holders in uri
+                    UriPlaceHolderValidation uriValid = new UriPlaceHolderValidation(); //the class check valid placer holders in uri
                     int numParams = await uriValid.countParamsUri(pageInput.Uri);
                     Frequency newFrequency = await processFreq(pageInput);
 
